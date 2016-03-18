@@ -1,0 +1,716 @@
+var graphics = {
+    tile: function(Color,x,y,Size,Type){
+        fill(Color);
+        rect(x,y,Size,Size);
+        for (var nSize = 0; nSize < Size; nSize += 3){
+            fill(0,0,0,10);
+            if (Type === 1){
+                rect(x,y,nSize,Size);
+            }
+            if (Type === 2){
+                rect(x+Size,y,-nSize,Size);
+            }
+            if (Type === 3){
+                rect(x,y,Size,nSize);
+            }
+            if (Type === 4){
+                rect(x,y+Size,Size,-nSize);
+            }
+        }
+    },
+    grassTile: function(x,y,Size,Type){
+        graphics.tile(color(0, 130, 9),x,y,Size,Type);
+    },
+    waterTile: function(x,y,Size,Type){
+        graphics.tile(color(0, 85, 255),x,y,Size,Type);
+    },
+    treeTile: function(x,y,Size){
+        pushMatrix();
+        translate(x,y);
+        scale(Size/340);
+        translate(-60,-200);
+        fill(87, 48, 0);
+        beginShape();
+        vertex(124,210);
+        vertex(127,247);
+        vertex(126,278);
+        vertex(126,303);
+        vertex(119,375);
+        vertex(187,375);
+        vertex(180,335);
+        vertex(173,293);
+        vertex(170,247);
+        vertex(168,211);
+        endShape();
+        fill(0, 92, 6);
+        beginShape();
+        curveVertex(159,36);
+        curveVertex(159,36);
+        curveVertex(139,33);
+        curveVertex(102,53);
+        curveVertex(55,101);
+        curveVertex(40,152);
+        curveVertex(55,175);
+        curveVertex(74,208);
+        curveVertex(112,223);
+        curveVertex(204,225);
+        curveVertex(276,176);
+        curveVertex(284,141);
+        curveVertex(281,112);
+        curveVertex(249,59);
+        curveVertex(187,40);
+        curveVertex(159,36);
+        curveVertex(159,36);
+        endShape();
+        popMatrix();
+    },
+    sandTile: function(x,y,Size,Type){
+        graphics.tile(color(255, 229, 150),x,y,Size,Type);
+    },
+    sandDuneTile: function(x,y,Size){
+        pushMatrix();
+        translate(x,y);
+        scale(Size/220);
+        translate(-70,-80);
+        fill(163, 146, 106);
+        beginShape();
+        curveVertex(83,255);
+        curveVertex(83,255);
+        curveVertex(101,216);
+        curveVertex(128,120);
+        curveVertex(163,100);
+        curveVertex(226,120);
+        curveVertex(262,213);
+        curveVertex(278,264);
+        curveVertex(83,295);
+        curveVertex(83,255);
+        endShape();
+        popMatrix();
+    },
+    pathTile: function(x,y,Size,Type){
+        graphics.tile(color(69, 30, 0),x,y,Size,Type);
+    },
+    chestTile: function(x,y,Size,Type){
+        pushMatrix();
+        translate(x,y);
+        translate(5,10);
+        scale(Size/230);
+        fill(82, 52, 0);
+        rect(0,50,200,120);
+        fill(66, 36, 0);
+        arc(100,50,200,100,180,360);
+        rect(0,50,200,20);
+        stroke(100);
+        strokeWeight(3);
+        line(0,60,9,66);
+        line(9,66,19,71);
+        line(19,71,43,74);
+        line(43,74,62,74);
+        line(62,74,77,74);
+        line(77,74,128,70);
+        line(128,70,153,73);
+        line(153,73,171,75);
+        line(171,75,187,75);
+        line(187,75,198,71);
+        noStroke();
+        fill(112, 112, 112);
+        rect(85,50,30,40,10);
+        fill(0);
+        ellipse(100,60,10,10);
+        rect(97,66,5,15);
+        fill(100);
+        ellipse(0,60,7,7);
+        ellipse(9,66,7,7);
+        ellipse(19,71,7,7);
+        ellipse(43,74,7,7);
+        ellipse(62,74,7,7);
+        ellipse(77,74,7,7);
+        ellipse(128,70,7,7);
+        ellipse(153,73,7,7);
+        ellipse(171,75,7,7);
+        ellipse(187,75,7,7);
+        ellipse(198,71,7,7);
+        popMatrix();
+    },
+    wallTile: function(x,y,Size,Type){
+        graphics.tile(color(117, 117, 117),x,y,Size,Type);
+    },
+    campfireTile: function(x,y,Size){
+        pushMatrix();
+        translate(x,y);
+        scale(Size/200);
+        translate(-75,-115);
+        fill(255, 213, 0);
+        beginShape();
+        curveVertex(120,256);
+        curveVertex(120,256);
+        curveVertex(128,236);
+        curveVertex(128,213);
+        curveVertex(132,195);
+        curveVertex(137,183);
+        curveVertex(142,175);
+        curveVertex(152,160);
+        curveVertex(159,154);
+        curveVertex(169,151);
+        curveVertex(176,147);
+        curveVertex(193,157);
+        curveVertex(210,140);
+        curveVertex(220,136);
+        curveVertex(235,152);
+        curveVertex(239,183);
+        curveVertex(230,213);
+        curveVertex(246,238);
+        curveVertex(253,252);
+        curveVertex(253,252);
+        endShape();
+        fill(255, 140, 0);
+        beginShape();
+        curveVertex(144,251);
+        curveVertex(144,251);
+        curveVertex(141,229);
+        curveVertex(159,187);
+        curveVertex(183,179);
+        curveVertex(182,188);
+        curveVertex(194,200);
+        curveVertex(207,208);
+        curveVertex(229,249);
+        curveVertex(216,247);
+        curveVertex(216,247);
+        endShape();
+        fill(255, 81, 0);
+        beginShape();
+        curveVertex(160,236);
+        curveVertex(160,246);
+        curveVertex(170,218);
+        curveVertex(179,214);
+        curveVertex(201,259);
+        curveVertex(170,255);
+        curveVertex(170,245);
+        endShape();
+        fill(100,100,100,80);
+        beginShape();
+        curveVertex(115,166);
+        curveVertex(115,166);
+        curveVertex(116,135);
+        curveVertex(164,83);
+        curveVertex(194,85);
+        curveVertex(221,103);
+        curveVertex(188,119);
+        curveVertex(140,126);
+        curveVertex(133,162);
+        curveVertex(110,175);
+        curveVertex(110,175);
+        endShape();
+        beginShape();
+        curveVertex(234,105);
+        curveVertex(234,105);
+        curveVertex(253,100);
+        curveVertex(286,131);
+        curveVertex(276,164);
+        curveVertex(262,153);
+        curveVertex(258,140);
+        curveVertex(241,123);
+        curveVertex(225,111);
+        curveVertex(225,111);
+        endShape();
+        beginShape();
+        curveVertex(125,31);
+        curveVertex(125,31);
+        curveVertex(171,16);
+        curveVertex(239,30);
+        curveVertex(256,56);
+        curveVertex(210,59);
+        curveVertex(169,55);
+        curveVertex(141,55);
+        curveVertex(114,48);
+        curveVertex(114,48);
+        endShape();
+        fill(69, 39, 1);
+        quad(103,243,261,249,258,265,102,263);
+        fill(87, 49, 2);
+        quad(128,235,182,280,207,279,142,234);
+        fill(41, 23, 1);
+        quad(145,289,220,221,233,231,169,290);
+        fill(69, 31, 1);
+        quad(130,252,227,281,207,291,120,276);
+        fill(46, 27, 3);
+        quad(146,294,224,239,244,263,186,293);
+        fill(97, 59, 12);
+        quad(169,225,183,221,198,292,163,298);
+        fill(112, 72, 24);
+        quad(100,293,151,222,166,228,120,297);
+        popMatrix();
+    },
+    mountainTile: function(x,y,Size){
+        pushMatrix();
+        translate(x,y);
+        scale(Size/220);
+        translate(-70,-80);
+        fill(54, 30, 0);
+        beginShape();
+        curveVertex(83,255);
+        curveVertex(83,255);
+        curveVertex(101,216);
+        curveVertex(128,120);
+        curveVertex(163,100);
+        curveVertex(226,120);
+        curveVertex(262,213);
+        curveVertex(278,264);
+        curveVertex(83,295);
+        curveVertex(83,255);
+        endShape();
+        popMatrix();
+    },
+    
+    desert: function(){
+var cactus = function(x,y,Size){
+    pushMatrix();
+    translate(x,y);
+    scale(Size/186);
+    translate(-200,-167.5);
+    rectMode(CENTER);
+    noFill();
+    stroke(7,87,0);
+    strokeWeight(20);
+    arc(180,140,80,60,90,180);
+    arc(180,140,80,300,180,200);
+    arc(220,140,80,60,0,90);
+    arc(220,140,80,300,-20,0);
+    for (var Size = 0; Size < 20; Size ++){
+        stroke(255,255,255,5);
+        strokeWeight(Size);
+        arc(180,140,80,60,90,180);
+        arc(180,126,80,300,180,200);
+        arc(220,140,80,60,0,90);
+        arc(220,126,80,300,-20,0);
+    }
+    noStroke();
+    fill(7, 87, 0);
+    arc(200,100,50,50,180,360);
+    rect(200,179,50,160);
+    for (var Size = 0; Size < 50; Size += 3){
+        fill(255,255,255,5);
+        arc(200,100,Size,50,180,360);
+        rect(200,180,Size,160);
+    }
+    rectMode(BASELINE);
+    popMatrix();
+};
+noStroke();
+background(166, 191, 255);
+for (var Size = 0; Size < 300; Size +=10){
+    fill(255,255,255,13);
+    ellipse(200,250,Size,Size);
+}
+fill(232, 214, 144);
+beginShape();
+vertex(-10,400);
+vertex(-10,400);
+curveVertex(-10,189);
+curveVertex(11,199);
+curveVertex(45,217);
+curveVertex(98,220);
+curveVertex(144,213);
+curveVertex(215,197);
+curveVertex(307,201);
+curveVertex(366,232);
+curveVertex(410,240);
+vertex(430,400);
+vertex(400,400);
+endShape();
+cactus(250,200,50);
+cactus(0,180,50);
+
+fill(245, 225, 152);
+beginShape();
+curveVertex(-10,400);
+curveVertex(-10,400);
+curveVertex(-10,271);
+curveVertex(28,262);
+curveVertex(63,262);
+curveVertex(105,274);
+curveVertex(177,293);
+curveVertex(230,288);
+curveVertex(279,278);
+curveVertex(339,277);
+curveVertex(383,292);
+curveVertex(410,290);
+curveVertex(410,400);
+curveVertex(410,400);
+endShape();
+cactus(75,270,60);
+
+fill(255, 234, 158);
+beginShape();
+curveVertex(-10,400);
+curveVertex(-10,400);
+curveVertex(-10,350);
+curveVertex(23,342);
+curveVertex(87,345);
+curveVertex(165,366);
+curveVertex(220,356);
+curveVertex(283,341);
+curveVertex(354,347);
+curveVertex(380,360);
+curveVertex(410,360);
+curveVertex(410,400);
+curveVertex(410,400);
+endShape();
+cactus(350,350,90);
+
+fill(255,255,255,30);
+beginShape();
+curveVertex(39,42);
+curveVertex(65,34);
+curveVertex(87,30);
+curveVertex(108,34);
+curveVertex(134,49);
+curveVertex(145,84);
+curveVertex(128,94);
+curveVertex(95,86);
+curveVertex(73,86);
+curveVertex(21,78);
+curveVertex(23,53);
+curveVertex(31,47);
+endShape();
+beginShape();
+curveVertex(209,92);
+curveVertex(272,57);
+curveVertex(324,52);
+curveVertex(361,64);
+curveVertex(353,91);
+curveVertex(290,112);
+curveVertex(252,119);
+curveVertex(211,123);
+curveVertex(208,108);
+curveVertex(208,108);
+endShape();
+},
+    forest: function(){
+    var tree=function(x,y,Size){
+        rectMode(CENTER);
+        noStroke();
+        fill(Size/random(7,9), Size/9, 0);
+        rect(x,y,Size*2/10,Size,Size/30);
+        fill(0,0,0,5);
+        for (var SIZE=0;SIZE<Size;SIZE+=Size/15){
+            rect(x,y,Size*2/10,SIZE,Size/20);    
+        }
+        fill(0, Size/3, 0);
+        ellipse(x,y-Size*8/10,Size*random(9,10)/10,Size*random(7,12)/10);
+        for (var SIZE=0;SIZE<Size;SIZE+=Size/10){
+            fill(0,0,0,10);
+            ellipse(x-random(-10,10),y-Size*8/10,SIZE*random(9,10)/10,SIZE*random(7,22)/10);
+        }
+    };
+    noStroke();
+    background(0, 0, 175);
+    fill(0,150,0);
+    rect(0,200,400,200);
+    for (var Size=0;Size<200;Size+=2){
+        fill(0,0,0,8);
+        rect(0,200,400,Size);    
+    }
+    translate(30,-50);
+    scale(0.5);
+    for (var x=0;x<10100;x+=random(80,130)){
+        for (var y=90;y<700;y+=random(40,60)){
+            tree(x-y/2,y,y/2);
+        }
+    }
+
+},
+    fort: function() {
+        pushMatrix();
+        scale(0.8);
+        noStroke();
+        background(0, 107, 201);
+        for (var y = 0; y < 400; y += 1) {
+            fill(194, 236, 255, 1.5);
+            rect(0, y, 500, y);
+        }
+        for (var size = 130; size > 0; size += -1) {
+            fill(255, 255, 0, 10);
+            ellipse(500, 0, size, size);
+        }
+        fill(17, 115, 0);
+        rect(0, 200, 500, 200);
+        for (var y = 200; y > 0; y += -3) {
+            fill(0, 0, 0, 3);
+            rect(0, 200, 500, y);
+        }
+        fill(150);
+        quad(40, 40, 75, 50, 425, 50, 415, 35);
+        fill(130);
+        rect(75, 50, 350, 200);
+        for (var x = 75; x < 400; x += 62) {
+            fill(107, 107, 107);
+            quad(x, 20, x, 50, x - 20, 45, x - 20, 15);
+            quad(x, 20, x + 40, 20, x + 20, 15, x - 20, 15);
+            fill(125);
+            rect(x, 20, 40, 30);
+        }
+        quad(75, 50, 75, 250, 40, 210, 40, 40);
+        fill(0, 62, 219);
+        rect(0, 270, 500, 200);
+        for (var y = 200; y > 0; y += -3) {
+            fill(0, 0, 0, 5);
+            rect(0, 270, 500, y);
+        }
+        fill(17, 115, 0);
+        rect(0, 375, 500, 200);
+        for (var y = 200; y > 0; y += -3) {
+            fill(0, 0, 0, 3);
+            rect(0, 375, 500, y);
+        }
+        fill(79, 33, 0);
+        quad(215, 250, 265, 250, 350, 400, 200, 400);
+        fill(54, 23, 0);
+        quad(215, 250, 200, 400, 200, 425, 208, 253);
+        fill(94, 38, 0);
+        rect(200, 400, 150, 25);
+        fill(105, 43, 1);
+        rect(205, 185, 65, 65);
+        arc(237.5, 185, 65, 65, 180, 360);
+        popMatrix();
+    },
+    mountains: function() {
+        background(140, 191, 250);
+        noStroke();
+        for (var Size = 0; Size < 200; Size += 3) {
+            fill(255, 255, 255, 6);
+            ellipse(400, 0, Size, Size);
+        }
+        for (var Size = 0; Size < 100; Size += 5) {
+            fill(255, 255, 255, 5);
+            rect(0, 0, 400, Size);
+        }
+        fill(61, 32, 0);
+        beginShape();
+        vertex(0, 149);
+        vertex(0, 149);
+        curveVertex(12, 121);
+        curveVertex(28, 101);
+        curveVertex(36, 91);
+        curveVertex(49, 84);
+        curveVertex(72, 84);
+        curveVertex(75, 87);
+        curveVertex(86, 97);
+        curveVertex(91, 107);
+        curveVertex(118, 107);
+        curveVertex(137, 87);
+        curveVertex(160, 69);
+        curveVertex(198, 56);
+        curveVertex(221, 59);
+        curveVertex(273, 89);
+        curveVertex(291, 109);
+        curveVertex(308, 119);
+        curveVertex(337, 113);
+        curveVertex(357, 98);
+        curveVertex(366, 92);
+        curveVertex(400, 94);
+        vertex(400, 400);
+        vertex(0, 400);
+        vertex(0, 400);
+        endShape();
+        fill(87, 35, 0);
+        beginShape();
+        vertex(0, 29);
+        vertex(0, 29);
+        curveVertex(8, 65);
+        curveVertex(17, 81);
+        curveVertex(23, 108);
+        curveVertex(24, 129);
+        curveVertex(25, 145);
+        curveVertex(28, 154);
+        curveVertex(42, 162);
+        curveVertex(46, 164);
+        curveVertex(56, 166);
+        curveVertex(79, 166);
+        curveVertex(92, 153);
+        curveVertex(105, 117);
+        curveVertex(112, 89);
+        curveVertex(120, 81);
+        curveVertex(134, 87);
+        curveVertex(149, 122);
+        curveVertex(158, 133);
+        curveVertex(186, 147);
+        curveVertex(227, 141);
+        curveVertex(234, 138);
+        curveVertex(284, 138);
+        curveVertex(299, 142);
+        curveVertex(327, 149);
+        curveVertex(400, 212);
+        vertex(400, 400);
+        vertex(0, 400);
+        vertex(0, 400);
+        endShape();
+        fill(87, 41, 0);
+        beginShape();
+        vertex(0, 175);
+        vertex(0, 175);
+        curveVertex(26, 191);
+        curveVertex(37, 202);
+        curveVertex(47, 208);
+        curveVertex(67, 214);
+        curveVertex(85, 210);
+        curveVertex(107, 189);
+        curveVertex(143, 144);
+        curveVertex(168, 129);
+        curveVertex(196, 131);
+        curveVertex(239, 181);
+        curveVertex(270, 232);
+        curveVertex(315, 220);
+        curveVertex(341, 200);
+        curveVertex(392, 116);
+        curveVertex(400, 51);
+        vertex(400, 400);
+        vertex(0, 400);
+        vertex(0, 400);
+        endShape();
+        fill(87, 48, 0);
+        beginShape();
+        vertex(0, 210);
+        vertex(0, 210);
+        curveVertex(9, 212);
+        curveVertex(13, 211);
+        curveVertex(30, 189);
+        curveVertex(39, 168);
+        curveVertex(50, 126);
+        curveVertex(57, 107);
+        curveVertex(61, 103);
+        curveVertex(73, 112);
+        curveVertex(77, 134);
+        curveVertex(82, 183);
+        curveVertex(97, 240);
+        curveVertex(121, 260);
+        curveVertex(141, 246);
+        curveVertex(145, 234);
+        curveVertex(151, 223);
+        curveVertex(169, 220);
+        curveVertex(179, 220);
+        curveVertex(215, 253);
+        curveVertex(233, 276);
+        curveVertex(252, 278);
+        curveVertex(258, 275);
+        curveVertex(266, 240);
+        curveVertex(264, 195);
+        curveVertex(273, 163);
+        curveVertex(294, 146);
+        curveVertex(319, 143);
+        curveVertex(352, 151);
+        curveVertex(362, 176);
+        curveVertex(377, 199);
+        curveVertex(400, 205);
+        vertex(400, 400);
+        vertex(0, 400);
+        vertex(0, 400);
+        endShape();
+        fill(97, 58, 0);
+        beginShape();
+        vertex(0, 285);
+        vertex(0, 285);
+        curveVertex(34, 282);
+        curveVertex(40, 277);
+        curveVertex(56, 268);
+        curveVertex(68, 261);
+        curveVertex(85, 250);
+        curveVertex(95, 240);
+        curveVertex(116, 233);
+        curveVertex(122, 232);
+        curveVertex(139, 242);
+        curveVertex(154, 251);
+        curveVertex(167, 266);
+        curveVertex(177, 276);
+        curveVertex(201, 277);
+        curveVertex(215, 260);
+        curveVertex(228, 249);
+        curveVertex(259, 238);
+        curveVertex(299, 238);
+        curveVertex(340, 255);
+        curveVertex(395, 281);
+        curveVertex(398, 287);
+        vertex(400, 400);
+        vertex(0, 400);
+        vertex(0, 400);
+        endShape();
+        fill(87, 37, 3);
+        beginShape();
+        vertex(0, 266);
+        vertex(0, 266);
+        curveVertex(20, 247);
+        curveVertex(40, 253);
+        curveVertex(48, 264);
+        curveVertex(52, 288);
+        curveVertex(55, 299);
+        curveVertex(63, 307);
+        curveVertex(90, 314);
+        curveVertex(110, 310);
+        curveVertex(135, 300);
+        curveVertex(152, 278);
+        curveVertex(194, 282);
+        curveVertex(217, 299);
+        curveVertex(267, 308);
+        curveVertex(341, 306);
+        curveVertex(400, 320);
+        vertex(400, 400);
+        vertex(0, 400);
+        vertex(0, 400);
+        endShape();
+        fill(71, 33, 0);
+        beginShape();
+        vertex(0, 338);
+        vertex(0, 338);
+        curveVertex(18, 347);
+        curveVertex(34, 354);
+        curveVertex(62, 356);
+        curveVertex(108, 352);
+        curveVertex(134, 342);
+        curveVertex(154, 335);
+        curveVertex(179, 333);
+        curveVertex(207, 336);
+        curveVertex(226, 347);
+        curveVertex(261, 358);
+        curveVertex(278, 361);
+        curveVertex(300, 359);
+        curveVertex(346, 351);
+        curveVertex(369, 347);
+        curveVertex(400, 346);
+        vertex(400, 400);
+        vertex(0, 400);
+        vertex(0, 400);
+        endShape();
+    },
+    path: function() {
+        noStroke();
+        background(0, 107, 201);
+        for (var y = 0; y < 400; y += 1) {
+            fill(194, 236, 255, 1.5);
+            rect(0, y, 500, y);
+        }
+        pushMatrix();
+        scale(0.8);
+        fill(19, 66, 0);
+        ellipse(0, 600, 600, 500);
+        fill(25, 84, 0);
+        ellipse(500, 600, 600, 500);
+        fill(56, 29, 0);
+        rect(0, 10, 15, 400);
+        rect(485, 10, 15, 400);
+        quad(253, 460, 248, 460, 200, 500, 280, 500);
+        fill(21, 71, 0);
+        ellipse(40, 0, 57, 53);
+        ellipse(460, 0, 57, 53);
+        fill(15, 54, 0);
+        ellipse(0, 40, 53, 57);
+        ellipse(500, 40, 53, 57);
+        fill(23, 82, 0);
+        ellipse(0, 0, 100, 100);
+        ellipse(500, 0, 100, 100);
+        for (var size = 200; size > 0; size += -1) {
+            fill(255, 255, 0, 7);
+            ellipse(250, -50, size, size);
+        }
+        popMatrix();
+    },
+};
