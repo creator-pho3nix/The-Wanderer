@@ -1,17 +1,7 @@
-
-{
+var page = "menu";
+var buttons = [];
 var keys = [];
-keyPressed = function(){
-    keys[keyCode] = true;
-};
-keyReleased = function(){
-    keys[keyCode] = false;
-};
 var clicked = false;
-mouseClicked = function(){
-    clicked = true;
-};
-}
 
 var graphics = {
     tile: function(Color,x,y,Size,Type){
@@ -33,7 +23,6 @@ var graphics = {
             }
         }
     },
-    
     grassTile: function(x,y,Size,Type){
         graphics.tile(color(0, 130, 9),x,y,Size,Type);
     },
@@ -289,8 +278,11 @@ var board = [
 var npcs = [
 
 ];
-var preferences = [];
+var preferences = [
+
+];
 var boardTiles = ["grass","water","tree","sand","sanddune","path","chest","wall","campfire"];
+
 var pixelDisplay = function(x,y,Width,Height,Design,Colors){
     //Translates the graphics to the correct place
     noStroke();
@@ -313,12 +305,15 @@ var pixelDisplay = function(x,y,Width,Height,Design,Colors){
     popMatrix();
 };
 
-var setAlexTsPreferences = function(){
-    textAlign(CENTER,CENTER);
-    noStroke();
-    if (!mouseIsPressed){
-        clicked = false;
-    }
+keyPressed = function(){
+    keys[keyCode] = true;
+};
+keyReleased = function(){
+    keys[keyCode] = false;
+};
+
+mouseClicked = function(){
+    clicked = true;
 };
 
 var button = function(Text,x,y,Size,toDo){
@@ -331,6 +326,8 @@ var button = function(Text,x,y,Size,toDo){
 };
 button.prototype.display = function(){
     textAlign(CENTER,CENTER);
+    textFont(createFont("Impact"));
+    textSize(this.Size/4);
     if (this.over && mouseIsPressed){
         fill(150);
         ellipse(this.pos.x, this.pos.y, this.Size, this.Size);
@@ -342,7 +339,7 @@ button.prototype.display = function(){
         fill(this.gradient);
         ellipse(this.pos.x - this.Size/20, this.pos.y - this.Size/20, this.Size, this.Size);
         textFont(createFont("Impact"));
-        textSize(this.Size/3.5);
+        textSize(this.Size/4);
         fill(50);
         text(this.Text,this.pos.x - this.Size/20, this.pos.y - this.Size/20);
     }
@@ -364,6 +361,11 @@ button.prototype.update = function(){
     }else{
         this.gradient = 255;
     }
+};
+var deployButtons = function(){
+    buttons.push(new button("Begin",250,300,100));
+    buttons.push(new button("About",180,400,100));
+    buttons.push(new button("Settings",320,400,100));
 };
 
 var character = function(){
@@ -390,9 +392,53 @@ character.prototype.update = function(){
     this.pos.x = constrain(this.pos.x,-0,board[0].length*80);
     this.pos.y = constrain(this.pos.y,-0,board.length*80);
 };
-
 var player = new character();
 
+var setGame = function(){
+    textAlign(CENTER,CENTER);
+    noStroke();
+    if (!mouseIsPressed){
+        clicked = false;
+    }
+    if (preferences.length < 441){
+        preferences.push(floor(random(1,5)));
+    }
+};
+var menu = function(){
+        cursor("default");
+        noStroke();
+        background(200,0,0);
+        for (var Size = 0; Size < 500; Size += 7){
+            fill(0,0,0,1);
+            rect(0,0,Size,500);
+            fill(31, 184, 0,5);
+            rect(0,0,500,Size);
+            fill(0, 64, 255,5);
+            rect(500,0,-Size,500);
+        }
+        for (var Size = 0; Size < 500; Size += 20){
+            fill(0,0,0,5);
+            rect(0,0,500,Size);
+        }
+        textFont(createFont("Impact"));
+        
+        textAlign(CENTER,CENTER);
+        for (var Size = 70; Size < 80; Size ++){
+            textSize(Size);
+            fill(255,255,255,7);
+            text("The Wanderer",250,100);
+        }
+        textSize(70);
+        fill(255);
+        text("The Wanderer",250,100);
+        textSize(20);
+        text("An AlexT Production • 2016",250,150);
+        textFont(createFont("default"));
+        for (var i = 0; i < 3; i ++){
+            buttons[i].display();
+            buttons[i].update();
+        }
+    };
 var initiateExploration = function(){
     background(148, 200, 255);
     for (var Size = 0; Size < 200; Size += 9){
@@ -433,15 +479,10 @@ var initiateExploration = function(){
     player.display();
     player.update();
 };
+
+deployButtons();
+
 draw = function() {
-    setAlexTsPreferences();
-    initiateExploration();
-    if (preferences.length < 441){
-        preferences.push(floor(random(1,5)));
-    }
-    background(255);
+    setGame();
+    //initiateExploration();
 };
-
-
-
-
