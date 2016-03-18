@@ -321,6 +321,51 @@ var setAlexTsPreferences = function(){
     }
 };
 
+var button = function(Text,x,y,Size,toDo){
+    this.Text = Text;
+    this.pos = new PVector(x,y);
+    this.Size = Size;
+    this.toDo = toDo;
+    this.over = false;
+    this.gradient = 255;
+};
+button.prototype.display = function(){
+    textAlign(CENTER,CENTER);
+    if (this.over && mouseIsPressed){
+        fill(150);
+        ellipse(this.pos.x, this.pos.y, this.Size, this.Size);
+        fill(50);
+        text(this.Text,this.pos.x, this.pos.y);
+    }else{
+        fill(0,0,0,50);
+        ellipse(this.pos.x, this.pos.y, this.Size, this.Size);
+        fill(this.gradient);
+        ellipse(this.pos.x - this.Size/20, this.pos.y - this.Size/20, this.Size, this.Size);
+        textFont(createFont("Impact"));
+        textSize(this.Size/3.5);
+        fill(50);
+        text(this.Text,this.pos.x - this.Size/20, this.pos.y - this.Size/20);
+    }
+};
+button.prototype.update = function(){
+    if (dist(this.pos.x,this.pos.y,mouseX,mouseY) < this.Size/2){
+        this.over = true;
+    }else{
+        this.over = false;
+    }
+    if (this.over){
+        cursor("pointer");
+        if (this.gradient > 200){
+            this.gradient -=5;
+        }
+        if (clicked){
+            this.toDo();
+        }
+    }else{
+        this.gradient = 255;
+    }
+};
+
 var character = function(){
     this.pos = new PVector(350,40);
     this.Size = 50;
@@ -396,3 +441,7 @@ draw = function() {
     }
     background(255);
 };
+
+
+
+
