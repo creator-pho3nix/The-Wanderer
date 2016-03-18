@@ -1,0 +1,13 @@
+var clicked = false;
+var button = function(x,y,Width,Height,toDo){
+    this.pos = new PVector(x,y);
+    this.Width = Width;
+    this.Height = Height;
+    this.toDo = toDo;
+};
+button.prototype.display = function(){
+
+};
+button.prototype.react = function(){
+
+};
