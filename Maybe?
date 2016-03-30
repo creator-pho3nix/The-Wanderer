@@ -1,0 +1,4304 @@
+//Quick Note - I am not done with this, and so if you are Pamela and you see this note, then skip over this program. I don't want to delete it yet, though, as I still might finish before the deadline.
+/**FOR PAMELA
+I've been programming 7 months, and I have learned 100% of Intro to JS.
+I made a program that re-creates the classic game called Star Wars: Galaxy of Heroes
+You can read more about it here: http://starwars.wikia.com/wiki/Star_Wars:_Galaxy_of_Heroes
+
+NOTES
+
+Even though this game was created in 2015, the game I am basing it on (Star Wars: Galaxy Of Heroes) pretends that what you are playing is a game in the actual Star Wars universe called a Holotable (And you are viewing the game through the eyes of a Holotable player). Everyone knows that Star Wars happened in a galaxy far, far away, and so any knowledge of their universe would have had to travel billions of lightyears to planet Earth for us to receive it. Thus, if a game called "Holotables" actually did occur in the Star Wars universe, it would have been invented millions of years ago for us to know about it now, and would thus be the very definition of retro.
+
+Also, Star Wars itself is retro (if you don't count the prequels, which aren't really true Star Wars movies anyway), seeing as they were all made before 1990.
+
+________________________________________________________________________
+|            WELCOME TO STAR WARS: GALAXY OF HEROES!                   |
+|                                                                      |
+| You are a young commander in the Republic Army during the Clone Wars.|
+| You have to try to make the perfect team to defeat the evil Sith and |
+| save the Republic from certain doom.                                 |
+|                                                                      |
+| You start off with 20,000 credits and 300 gems to aid you in your    |
+| battles. With this money, you can buy Battle Droids to train your    |
+| characters, enter Contests, and more!                                |
+|                                                                      |
+| You can earn more money by entering battles. You will face up to 5   |
+| opponents, and can fight them using your team. If you win, then      |
+| you win more Battle Droids, Credits, Gems, and even more             |
+| characters! However, if you lose, 10,000 credits will be taken away! |
+|                                                                      |
+| If you lose more than 3 battles in a row, you will lose 100 gems.    |
+| If you ever find that a battle is too hard, you can claim the Free   | 
+| Prizes in the Acheivements section to help you.                      | 
+|______________________________________________________________________| 
+*/
+//NOTE! 
+
+//This game is currently only around 10% complete, even though it has 4,000 lines of code. At this moment, key features like the menu are not working and will not work for a while.
+
+//Thank you for your patience,
+//AlexT
+
+//Sets up the player and their info
+var playerStats = [20000,300,0,0];
+
+//All of the graphics
+var graphics = {
+starDestroyer: function(x, y, Size) {
+    fill(200);
+    stroke(40, 40, 40, 70);
+    pushMatrix();
+    translate(x, y);
+    scale(Size / 610);
+    translate(-420, -150);
+    //Back E
+    fill(100, 100, 99);
+    quad(118, 152, 117, 175, 179, 198, 194, 157);
+    //Back
+    fill(153, 152, 154);
+    beginShape();
+    vertex(381, 34);
+    vertex(348, 0);
+    vertex(210, 36);
+    vertex(117, 153);
+    vertex(181, 167);
+    endShape();
+    fill(90, 90, 90);
+    quad(211, 35, 315, 122, 382, 35, 350, 0);
+    //Middle E
+    fill(101);
+    quad(169, 176, 169, 200, 304, 240, 305, 210);
+    quad(305, 241, 341, 237, 342, 207, 305, 216);
+    //Middle
+    fill(155);
+    beginShape();
+    vertex(470, 127);
+    vertex(469, 104);
+    vertex(390, 28);
+    vertex(167, 175);
+    vertex(305, 217);
+    vertex(342, 213);
+    endShape();
+    //Middle Groove
+    fill(139);
+    pushMatrix();
+    translate(5, -5);
+    quad(366, 200, 245, 159, 380, 64, 429, 159);
+    fill(130);
+    quad(315, 110, 404, 170, 427, 156, 381, 63);
+    popMatrix();
+    //Bottom part of nose
+    fill(143, 142, 143);
+    triangle(713, 334, 333, 242, 463, 146);
+    //Middle part of nose
+    fill(132, 131, 130);
+    quad(341, 212, 340, 234, 701, 326, 705, 308);
+    fill(127);
+    quad(520, 255, 512, 278, 340, 237, 340, 212);
+    //First Step
+    fill(109, 108, 105);
+    quad(168, 114, 169, 130, 277, 182, 278, 170);
+    fill(148);
+    quad(277, 167, 398, 72, 401, 83, 278, 180);
+    fill(143);
+    quad(167, 115, 277, 169, 398, 71, 280, 20);
+    //Front FS
+    fill(142);
+    quad(308, 158, 376, 176, 412, 151, 389, 94);
+    fill(100, 103, 105);
+    quad(309, 157, 311, 166, 378, 186, 376, 176);
+    fill(102, 102, 103);
+    quad(376, 175, 412, 151, 413, 161, 379, 185);
+    //Second Step
+    fill(166);
+    quad(258, 123, 329, 57, 262, 26, 195, 87);
+    fill(111, 111, 112);
+    quad(196, 87, 196, 103, 262, 141, 260, 124);
+    fill(125);
+    quad(263, 143, 334, 75, 329, 56, 259, 121);
+    //Second.5 Step
+    fill(136);
+    quad(275, 125, 326, 75, 345, 87, 294, 135);
+    fill(111, 111, 112);
+    quad(276, 125, 276, 135, 295, 142, 294, 135);
+    fill(117);
+    quad(296, 143, 347, 95, 345, 88, 295, 135);
+    //Third Step
+    fill(148);
+    quad(197, 67, 260, 94, 295, 59, 247, 21);
+    fill(102, 103, 102);
+    quad(198, 65, 200, 85, 265, 105, 260, 92);
+    fill(113);
+    quad(261, 94, 294, 58, 298, 69, 261, 106);
+    //Fourth Step
+    fill(106);
+    quad(220, 63, 207, 33, 237, 11, 250, 39);
+    fill(136);
+    quad(208, 34, 201, 29, 212, 60, 220, 63);
+    fill(200);
+    quad(202, 28, 231, 6, 237, 12, 208, 34);
+    //Fifth Step
+    pushMatrix();
+    rotate(-3);
+    fill(147);
+    quad(179, 26, 198, 46, 250, 17, 231, -8);
+    fill(103);
+    quad(179, 25, 180, 33, 199, 51, 198, 45);
+    fill(131, 131, 132);
+    quad(198, 50, 249, 26, 250, 15, 198, 43);
+    popMatrix();
+    //Top part of nose
+    fill(149, 148, 150);
+    triangle(340, 212, 721, 313, 469, 126);
+    fill(167, 166, 167);
+    beginShape();
+    vertex(379, 202);
+    vertex(405, 156);
+    vertex(454, 150);
+    vertex(722, 315);
+    vertex(379, 202);
+    endShape();
+    fill(132);
+    triangle(406, 157, 719, 313, 457, 151);
+    fill(159);
+    triangle(416, 172, 409, 188, 473, 212);
+    triangle(432, 161, 490, 187, 459, 163);
+    popMatrix();
+},
+RepublicAttackCruiser: function(x, y, Size) {
+    pushMatrix();
+    translate(x, y);
+    scale(Size / 720);
+    translate(-406, -100);
+    noStroke();
+    //Back of nose
+    fill(150, 144, 136);
+    quad(325, 128, 372, 112, 467, 195, 435, 240);
+    quad(467, 194, 525, 149, 434, 84, 372, 111);
+    //Middle section of nose
+    fill(114, 109, 103);
+    quad(362, 163, 398, 134, 434, 167, 401, 202);
+    quad(382, 150, 417, 188, 434, 170, 397, 136);
+    //Shaded part of Nose
+    fill(138, 133, 127);
+    quad(428, 230, 454, 185, 467, 197, 438, 239);
+    quad(329, 128, 371, 113, 379, 120, 338, 138);
+    //Side of Back Part of nose
+    fill(53, 51, 46);
+    quad(467, 196, 474, 217, 434, 270, 435, 240);
+    //Side of back back part of nose
+    fill(36, 36, 38);
+    quad(474, 216, 523, 207, 524, 151, 467, 195);
+    //Gun hold
+    fill(29, 30, 29);
+    beginShape();
+    vertex(246, 298);
+    vertex(267, 299);
+    vertex(297, 292);
+    vertex(310, 282);
+    vertex(308, 252);
+    vertex(236, 273);
+    endShape();
+    //Gun edges
+    fill(144, 137, 126);
+    quad(260, 288, 271, 283, 273, 292, 264, 292);
+    quad(286, 282, 289, 289, 301, 283, 299, 279);
+    //gun
+    fill(114, 108, 103);
+    beginShape();
+    vertex(273, 284);
+    vertex(287, 283);
+    vertex(292, 303);
+    vertex(288, 305);
+    vertex(286, 300);
+    vertex(277, 302);
+    vertex(278, 307);
+    vertex(275, 308);
+    vertex(271, 284);
+    endShape();
+    //Jut in the front
+    fill(62, 62, 64);
+    quad(54, 300, 52, 312, 64, 326, 70, 320);
+    //Front of the nose
+    fill(15, 15, 18);
+    quad(57, 259, 49, 291, 82, 338, 95, 313);
+    //Main outline of the nose
+    fill(151, 145, 138);
+    quad(94, 313, 435, 238, 330, 130, 56, 258);
+    //Top groves of the nose
+    fill(151, 145, 138);
+    beginShape();
+    vertex(331, 132);
+    vertex(324, 123);
+    vertex(308, 134);
+    vertex(309, 143);
+    vertex(293, 141);
+    vertex(275, 147);
+    vertex(275, 157);
+    vertex(240, 174);
+    vertex(235, 168);
+    vertex(208, 181);
+    vertex(208, 189);
+    vertex(201, 180);
+    vertex(177, 195);
+    vertex(176, 199);
+    vertex(170, 201);
+    vertex(157, 204);
+    vertex(155, 202);
+    vertex(141, 209);
+    vertex(142, 218);
+    vertex(138, 214);
+    vertex(57, 255);
+    vertex(58, 259);
+    endShape();
+    //Side of nose
+    fill(43, 42, 44);
+    quad(83, 340, 245, 307, 250, 280, 95, 313);
+    //Inner groves of side
+    fill(39, 39, 39);
+    quad(339, 285, 372, 279, 367, 254, 331, 263);
+    quad(385, 276, 419, 266, 416, 242, 378, 252);
+    //Outer groves of side
+    fill(50);
+    quad(309, 266, 308, 297, 344, 291, 339, 260);
+    quad(364, 254, 370, 285, 388, 281, 384, 250);
+    quad(414, 243, 414, 274, 435, 269, 435, 238);
+    //Bottom Groves of nose
+    fill(151, 145, 138);
+    beginShape();
+    vertex(93, 312);
+    vertex(168, 299);
+    vertex(171, 304);
+    vertex(199, 298);
+    vertex(199, 292);
+    vertex(208, 294);
+    vertex(222, 288);
+    vertex(241, 287);
+    vertex(251, 281);
+    vertex(308, 267);
+    vertex(312, 273);
+    vertex(342, 269);
+    vertex(340, 263);
+    vertex(367, 261);
+    vertex(386, 253);
+    vertex(399, 251);
+    vertex(434, 237);
+    endShape();
+    //Center piece
+    fill(119, 44, 46);
+    beginShape();
+    vertex(68, 275);
+    vertex(357, 163);
+    vertex(388, 172);
+    vertex(401, 206);
+    vertex(80, 291);
+    endShape();
+    //Front of the nose (GROOVES);
+    fill(66, 65, 70);
+    quad(61, 290, 55, 303, 70, 321, 78, 305);
+    quad(55, 271, 82, 305, 80, 312, 52, 279);
+    quad(54, 298, 62, 268, 57, 260, 50, 291);
+    quad(68, 277, 66, 283, 77, 297, 79, 292);
+    quad(85, 301, 72, 325, 76, 330, 90, 308);
+    //Groves on center piece
+    stroke(83, 29, 28);
+    strokeWeight(2);
+    line(73, 283, 387, 174);
+    line(115, 271, 119, 280);
+    line(142, 262, 146, 272);
+    line(172, 250, 177, 264);
+    line(198, 243, 201, 258);
+    line(222, 234, 227, 251);
+    line(252, 223, 257, 242);
+    line(283, 213, 289, 234);
+    line(311, 203, 315, 227);
+    line(335, 194, 343, 219);
+    line(356, 185, 365, 214);
+    line(375, 181, 391, 206);
+    //Back Groves on center piece
+    line(116, 271, 106, 262);
+    line(142, 262, 130, 253);
+    line(173, 250, 159, 243);
+    line(197, 243, 180, 232);
+    line(223, 235, 206, 224);
+    line(251, 225, 230, 214);
+    line(283, 214, 262, 201);
+    line(311, 203, 288, 191);
+    line(335, 195, 313, 182);
+    line(358, 188, 327, 177);
+    line(376, 182, 344, 171);
+    stroke(80, 74, 66);
+    //Side Grooves
+    line(105, 287, 118, 309);
+    line(135, 278, 154, 300);
+    line(163, 270, 176, 303);
+    line(191, 262, 212, 294);
+    line(218, 256, 245, 284);
+    //Back Side Grooves
+    line(94, 266, 75, 247);
+    line(124, 255, 109, 232);
+    line(152, 246, 122, 223);
+    line(173, 235, 146, 208);
+    line(201, 224, 185, 191);
+    noStroke();
+    //Side Plates
+    fill(128, 123, 117);
+    quad(262, 278, 253, 255, 296, 243, 303, 270);
+    quad(297, 244, 333, 230, 347, 263, 305, 268);
+    quad(334, 232, 357, 219, 375, 261, 350, 262);
+    quad(360, 225, 408, 212, 425, 230, 373, 250);
+    //Back Side Plates
+    quad(214, 179, 231, 201, 267, 190, 255, 169);
+    quad(265, 187, 298, 178, 287, 143, 256, 168);
+    quad(297, 176, 318, 176, 304, 141, 289, 144);
+    quad(315, 169, 350, 152, 329, 130, 307, 150);
+    //Engine
+    fill(53, 53, 53);
+    quad(381, 241, 410, 230, 404, 223, 374, 233);
+    quad(313, 154, 316, 160, 337, 152, 330, 142);
+    stroke(255);
+    //Ship Markings
+    fill(161, 138, 89);
+    stroke(101, 50, 41);
+    strokeWeight(3);
+    ellipse(424, 199, 20, 20);
+    ellipse(366, 142, 20, 20);
+    strokeWeight(1);
+    noStroke();
+    stroke(40, 40, 40, 50);
+    //Hyperdrive
+    fill(66, 63, 56);
+    quad(550, -6, 655, -60, 703, -46, 615, 24);
+    fill(59, 56, 50);
+    quad(702, -47, 711, 13, 651, 64, 614, 22);
+    fill(56, 55, 48);
+    quad(606, 17, 671, -39, 653, -46, 586, -2);
+    //Front Wing
+    fill(160, 154, 148);
+    beginShape();
+    vertex(524, 150);
+    vertex(724, 198);
+    vertex(757, 180);
+    vertex(614, 23);
+    vertex(472, 111);
+    endShape();
+    //Back Wing
+    beginShape();
+    vertex(615, 23);
+    vertex(440, -58);
+    vertex(424, -38);
+    vertex(435, 85);
+    vertex(472, 112);
+    endShape();
+    //Back Wing Dip
+    fill(27, 27, 29);
+    quad(425, -36, 421, -21, 430, 86, 436, 85);
+    //Front Wing Insert
+    fill(102, 96, 89);
+    quad(726, 214, 761, 201, 760, 188, 709, 197);
+    //Front Wing Dip
+    fill(32, 32, 34);
+    quad(523, 208, 725, 215, 723, 199, 525, 152);
+    //Front Wing Extra
+    fill(24, 26, 25);
+    quad(726, 211, 757, 195, 756, 179, 718, 198);
+    //Extention of middle of the nose
+    fill(149, 144, 137);
+    beginShape();
+    vertex(397, 138);
+    vertex(573, 7);
+    vertex(612, 23);
+    vertex(635, 49);
+    vertex(436, 170);
+    endShape();
+    //Back Wings
+    fill(138, 132, 125);
+    quad(673, 88, 684, 84, 752, 158, 746, 168);
+    quad(456, -50, 464, -55, 543, -18, 542, -11);
+    //Back Part of Bridge
+    fill(43, 43, 45);
+    quad(511, 54, 514, -53, 558, -68, 573, 7);
+    fill(37, 38, 40);
+    quad(515, -51, 510, -56, 507, 57, 511, 54);
+    fill(44, 44, 45);
+    triangle(514, 0, 494, 49, 513, 40);
+    //Middle Part of Bridge
+    fill(86, 81, 77);
+    quad(564, -35, 421, 139, 437, 152, 575, -15);
+    fill(117, 112, 103);
+    triangle(439, 153, 581, 36, 575, -15);
+    //Front Part of Bridge
+    fill(126, 120, 111);
+    triangle(535, 89, 567, 50, 557, 11);
+    fill(35, 36, 39);
+    quad(558, 12, 549, -46, 541, -50, 546, 9);
+    fill(56, 54, 48);
+    quad(522, 88, 546, 8, 557, 10, 534, 87);
+    fill(0);
+    quad(548, -46, 581, -59, 603, 23, 567, 49);
+    //Front FRONT part of bridge
+    fill(158, 151, 143);
+    quad(590, -30, 608, 35, 557, 78, 558, -20);
+    fill(45, 45, 45);
+    quad(558, 78, 553, 74, 553, -25, 558, -21);
+    fill(156, 150, 143);
+    quad(554, -23, 585, -32, 591, -28, 560, -19);
+    //Stripes
+    fill(97, 51, 48);
+    quad(715, 188, 736, 176, 726, 169, 707, 184);
+    quad(693, 183, 717, 162, 704, 158, 680, 181);
+    quad(665, 177, 690, 151, 673, 148, 653, 172);
+    //Back Stripes
+    quad(430, -34, 439, -42, 443, -36, 432, -25);
+    quad(434, -20, 449, -32, 453, -21, 435, -11);
+    quad(437, -3, 464, -15, 466, -3, 437, 10);
+    //Wing Plates
+    fill(146, 140, 134);
+    quad(583, 94, 616, 140, 668, 106, 617, 71);
+    quad(535, 131, 573, 109, 581, 150, 562, 153);
+    //Back Wing Plates
+    quad(450, 63, 461, 28, 486, 42, 470, 72);
+    quad(474, 19, 509, -2, 502, 31, 487, 33);
+    //Exit Hatch
+    fill(61, 58, 53);
+    quad(474, 199, 517, 170, 519, 200, 479, 207);
+    //Hyperdrive engine
+    fill(69, 70, 68);
+    ellipse(685, 15, 30, 30);
+    ellipse(706, 31, 30, 30);
+    ellipse(691, 70, 30, 30);
+    fill(44, 43, 41);
+    quad(627, 36, 679, 0, 690, 27, 648, 58);
+    fill(54, 53, 51);
+    quad(641, 54, 701, 16, 710, 45, 664, 79);
+    fill(44, 43, 41);
+    quad(660, 74, 690, 56, 697, 84, 679, 94);
+    //Top of Bridge
+    fill(89, 86, 81);
+    quad(492, -45, 509, -36, 563, -67, 541, -76);
+    fill(140, 140, 136);
+    quad(492, -43, 495, -35, 509, -30, 509, -35);
+    fill(111, 108, 103);
+    quad(511, -29, 562, -60, 562, -65, 511, -36);
+    //Second Top Of Bridge
+    pushMatrix();
+    translate(10, 86);
+    rotate(-10);
+    fill(98, 95, 89);
+    quad(537, -22, 598, -44, 604, -25, 547, -6);
+    fill(124, 122, 113);
+    quad(537, -20, 536, -10, 546, 2, 547, -6);
+    fill(139, 131, 123);
+    quad(547, 1, 602, -15, 604, -25, 547, -7);
+    popMatrix();
+    popMatrix();
+},
+logo: function(x, y, Size) {
+    pushMatrix();
+    translate(x, y);
+    scale(Size / 400);
+    translate(-200, -115);
+    stroke(255, 220, 0);
+    noFill();
+    strokeWeight(3);
+    pushMatrix();
+    translate(60, -40);
+    scale(0.9);
+    //ST
+    pushMatrix();
+    translate(-100, 0);
+    line(50, 120, 50, 150);
+    line(50, 152, 100, 152);
+    line(50, 120, 100, 120);
+    arc(112, 93, 50, 60, -240, -100);
+    arc(73, 117, 120, 80, -20, 60);
+    line(128, 100, 170, 100);
+    line(110, 63, 230, 63);
+    line(171, 100, 171, 150);
+    line(171, 152, 194, 152);
+    line(196, 150, 196, 100);
+    line(196, 100, 230, 100);
+    line(232, 99, 232, 63);
+    popMatrix();
+    //A
+    pushMatrix();
+    translate(-55, 0);
+    line(213, 63, 180, 152);
+    line(213, 63, 250, 63);
+    line(252, 63, 283, 152);
+    line(180, 152, 210, 152);
+    line(282, 152, 253, 152);
+    line(212, 152, 215, 135);
+    line(252, 152, 245, 135);
+    line(215, 135, 243, 135);
+    line(232, 80, 222, 115);
+    line(232, 80, 242, 115);
+    line(222, 115, 240, 115);
+    popMatrix();
+    //R
+    line(244, 63, 244, 152);
+    line(244, 63, 310, 63);
+    arc(310, 88, 50, 50, -90, 90);
+    line(310, 114, 310, 119);
+    line(310, 121, 360, 121);
+    line(362, 121, 362, 151);
+    line(362, 152, 300, 153);
+    line(244, 153, 269, 153);
+    line(270, 151, 270, 120);
+    line(270, 120, 300, 153);
+    rect(268, 84, 30, 17, 200);
+    popMatrix();
+    textSize(25);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text("G A L A X Y  O F  H E R O E S", 200, 118);
+    noFill();
+    pushMatrix();
+    //W
+    pushMatrix();
+    scale(1.1, 1);
+    translate(-10, 0);
+    line(20, 140, 35, 220);
+    line(35, 220, 60, 220);
+    line(62, 220, 70, 190);
+    line(70, 190, 80, 220);
+    line(80, 220, 105, 220);
+    line(107, 220, 120, 140);
+    line(118, 140, 100, 140);
+    line(100, 140, 92, 170);
+    line(92, 170, 86, 140);
+    line(84, 140, 60, 140);
+    line(60, 140, 50, 170);
+    line(50, 170, 40, 140);
+    line(39, 140, 20, 140);
+    popMatrix();
+    //A
+    pushMatrix();
+    translate(-45, 85);
+    scale(0.9);
+    line(213, 63, 180, 152);
+    line(213, 63, 250, 63);
+    line(252, 63, 283, 152);
+    line(180, 152, 210, 152);
+    line(282, 152, 253, 152);
+    line(212, 152, 215, 135);
+    line(252, 152, 245, 135);
+    line(215, 135, 243, 135);
+    line(232, 80, 222, 115);
+    line(232, 80, 242, 115);
+    line(222, 115, 240, 115);
+    popMatrix();
+    //R
+    pushMatrix();
+    scale(0.9);
+    translate(0, 93);
+    line(244, 63, 244, 152);
+    line(244, 63, 310, 63);
+    arc(310, 88, 50, 50, -90, 90);
+    line(310, 114, 310, 119);
+    line(310, 121, 360, 121);
+    line(362, 152, 300, 153);
+    line(244, 153, 269, 153);
+    line(270, 151, 270, 120);
+    line(270, 120, 300, 153);
+    rect(268, 84, 30, 17, 200);
+    popMatrix();
+    //S
+    pushMatrix();
+    translate(241, 84.3);
+    scale(0.9);
+    line(50, 152, 100, 152);
+    line(50, 120, 100, 120);
+    arc(112, 93, 50, 60, -240, -100);
+    arc(73, 117, 120, 80, -20, 60);
+    line(128, 100, 170, 100);
+    line(110, 63, 170, 63);
+    line(170, 63, 170, 100);
+    popMatrix();
+    popMatrix();
+    popMatrix();
+},
+CrossguardLightsaber: function(x, y, r, Size) {
+    pushMatrix();
+    translate(x, y);
+    rotate(r);
+    scale(Size);
+    translate(-110, 15);
+    noStroke();
+    for (var Size = 0; Size < 400; Size += 4) {
+        fill(200, 0, 0, 3);
+        ellipse(100, 10, Size / 3, Size);
+    }
+    fill(204, 30, 68);
+    arc(80, 112.5, 100, 10, 90, 270);
+    arc(140, 112.5, 100, 10, -90, 90);
+    arc(110, 112.5, 10, 500, 180, 360);
+    for (var Size = 0; Size < 10; Size += 1) {
+        fill(255, 255, 255, 11);
+        arc(80, 112.5, 100 - Size, Size, 90, 270);
+        arc(140, 112.5, 100 - Size, Size, -90, 90);
+        arc(110, 112.5, Size, 500 - Size * 5, 180, 360);
+    }
+    fill(85, 92, 97);
+    rect(80, 105, 60, 15, 5);
+    fill(43, 47, 49);
+    rect(80, 112.5, 60, 7.5, 5);
+    rectMode(CENTER);
+    for (var Size = 0; Size < 15; Size += 1) {
+        fill(255, 255, 255, 7);
+        rect(110, 112.5, 60, Size, 5);
+    }
+    rectMode(BASELINE);
+    fill(27, 29, 30);
+    rect(100, 100, 20, 100, 5);
+    rect(97.5, 160, 25, 40, 5);
+    rectMode(CENTER);
+    for (var Size = 0; Size < 23; Size += 1) {
+        fill(255, 255, 255, 1.5);
+        rect(110, 150, Size, 100, 5);
+    }
+    rectMode(BASELINE);
+    strokeWeight(2);
+    stroke(255, 0, 0, 100);
+    line(105, 120, 105, 180);
+    noStroke();
+    fill(26, 28, 27);
+    rect(101, 185, 3, 10);
+    rect(108.4, 187, 3, 10);
+    rect(116, 185, 3, 10);
+    rect(110, 110, 5, 15, 10);
+    rect(103, 140, 16, 5);
+    popMatrix();
+},
+gem: function(x,y,Size,Rotate){
+pushMatrix();
+rotate(Rotate);
+noStroke();
+fill(160, 76, 199);
+triangle(x-Size/2,y,x+Size/2,y,x,y-Size/2);
+fill(145, 55, 184);
+triangle(x-Size/2,y,x+Size/2,y,x,y+Size);
+fill(166, 92, 184);
+triangle(x-Size/2,y,x,y,x,y-Size/2);
+fill(127, 49, 158);
+triangle(x-Size/2,y,x,y,x,y+Size);
+popMatrix();
+},
+credit: function(x,y,Size,Rotate){
+pushMatrix();
+translate(x,y);
+scale(Size/320);
+rotate(Rotate);
+translate(-210,-240);
+noStroke();
+fill(230, 178, 58);
+quad(79,240,265,143,356,214,172,316);
+fill(191, 134, 0);
+quad(80,241,51,294,159,379,173,313);
+fill(214, 163, 43);
+quad(157,379,367,270,356,214,171,313);
+popMatrix();
+},
+battleDroid: function(x,y,Size){
+pushMatrix();
+translate(x,y);
+scale(Size/400);
+translate(-200,-200);
+noStroke();
+fill(255, 192, 0);
+quad(133,252,129,267,157,265,153,257);
+fill(255,132,0);
+quad(134,229,125,259,164,259,152,222);
+fill(117, 117, 117);
+quad(168,161,132,191,127,235,165,233);
+beginShape();
+vertex(209,183);
+vertex(264,224);
+vertex(261,226);
+vertex(280,237);
+vertex(273,249);
+vertex(256,235);
+vertex(253,238);
+vertex(211,214);
+endShape();
+fill(140);
+ellipse(200,200,100,100);
+fill(110);
+beginShape();
+vertex(166,200);
+vertex(243,245);
+vertex(242,250);
+vertex(260,260);
+vertex(252,271);
+vertex(238,259);
+vertex(232,262);
+vertex(157,221);
+endShape();
+fill(255, 0, 0);
+ellipse(210,188,20,8);
+ellipse(233,190,20,8);
+popMatrix();
+},
+cards: function(x,y,Size){
+pushMatrix();
+translate(x,y);
+scale(Size/400);
+translate(-225,-225);
+fill(90, 140, 232,random(20,30));
+triangle(85,70,325,370,-30,430);
+fill(61, 72, 92);
+rect(115,100,210,280,50);
+for (var Offset = 0; Offset < 50; Offset +=12){
+fill(90, 140, 232,random(20+Offset/2,20+Offset));
+rect(75+Offset,50+Offset,230,300,50);
+}
+popMatrix();
+},
+jawa: function(x,y,Size){
+pushMatrix();
+translate(x,y);
+scale(Size/225);
+translate(-171,-229);
+noStroke();
+//Dark Trail of Cloak
+fill(51, 26, 12);
+beginShape();
+vertex(116,234);
+vertex(112,250);
+vertex(114,264);
+vertex(120,274);
+vertex(137,282);
+vertex(129,312);
+vertex(125,324);
+vertex(119,335);
+vertex(107,343);
+vertex(130,339);
+vertex(165,331);
+vertex(189,324);
+vertex(200,313);
+vertex(213,285);
+vertex(169,240);
+endShape();
+//Light Trail of Cloak
+fill(61, 29, 13);
+beginShape();
+vertex(136,336);
+vertex(173,326);
+vertex(141,235);
+vertex(124,230);
+vertex(123,254);
+vertex(125,260);
+vertex(140,273);
+vertex(144,284);
+vertex(142,305);
+vertex(138,324);
+endShape();
+fill(71, 36, 18);
+beginShape();
+vertex(206,231);
+vertex(203,236);
+vertex(212,255);
+vertex(194,248);
+vertex(195,231);
+endShape();
+//Slightly Lighted Parts
+fill(71, 41, 24);
+beginShape();
+vertex(147,248);
+vertex(151,265);
+vertex(159,284);
+vertex(159,297);
+vertex(157,308);
+vertex(162,332);
+vertex(195,319);
+vertex(196,270);
+vertex(156,236);
+endShape();
+beginShape();
+vertex(129,240);
+vertex(130,259);
+vertex(136,264);
+vertex(153,271);
+vertex(151,239);
+endShape();
+//Lighted Parts
+fill(84, 48, 29);
+beginShape();
+vertex(144,243);
+vertex(150,245);
+vertex(162,250);
+vertex(178,259);
+vertex(186,270);
+vertex(191,282);
+vertex(194,300);
+vertex(195,319);
+vertex(212,293);
+vertex(218,278);
+vertex(219,267);
+vertex(218,260);
+vertex(213,250);
+vertex(201,246);
+vertex(190,242);
+endShape();
+beginShape();
+vertex(141,244);
+vertex(146,254);
+vertex(151,266);
+vertex(154,280);
+vertex(154,296);
+vertex(155,306);
+vertex(152,326);
+vertex(158,327);
+vertex(160,317);
+vertex(162,305);
+vertex(165,286);
+vertex(167,266);
+vertex(167,248);
+endShape();
+//Super Light Parts
+fill(102, 62, 39);
+beginShape();
+vertex(169,240);
+vertex(190,251);
+vertex(199,273);
+vertex(203,265);
+vertex(199,250);
+vertex(182,237);
+endShape();
+quad(151,241,156,263,161,256,160,243);
+//Light Blaster
+fill(70);
+quad(196,218,200,233,212,227,211,211);
+//Hand
+fill(92, 58, 29);
+beginShape();
+vertex(199,220);
+vertex(204,220);
+vertex(210,218);
+vertex(214,220);
+vertex(214,221);
+vertex(214,223);
+vertex(216,227);
+vertex(214,231);
+vertex(215,233);
+vertex(214,237);
+vertex(193,240);
+endShape();
+//Backpack
+fill(66, 39, 13);
+beginShape();
+vertex(151,173);
+vertex(132,199);
+vertex(133,201);
+vertex(127,206);
+vertex(122,222);
+vertex(114,234);
+vertex(118,236);
+vertex(163,181);
+endShape();
+//Cloak
+fill(113,70,47);
+beginShape();
+vertex(157,179);
+vertex(120,230);
+vertex(119,237);
+vertex(127,242);
+vertex(196,246);
+vertex(201,217);
+vertex(173,188);
+endShape();
+//Reflection on Cloak
+fill(126,81,52);
+beginShape();
+vertex(129,221);
+vertex(172,233);
+vertex(199,229);
+vertex(196,245);
+vertex(129,242);
+vertex(120,238);
+vertex(120,232);
+endShape();
+//Light Blaster
+fill(87, 87, 87);
+beginShape();
+vertex(179,214);
+vertex(242,192);
+vertex(252,183);
+vertex(258,203);
+vertex(247,204);
+vertex(186,223);
+endShape();
+fill(70);
+quad(210,201,215,217,236,210,231,194);
+fill(75);
+quad(171,216,176,220,177,230,188,216);
+//Strap for Backpack
+fill(157,118,76);
+beginShape();
+vertex(142,186);
+vertex(162,202);
+vertex(166,220);
+vertex(158,220);
+vertex(149,207);
+vertex(132,201);
+endShape();
+//End Of Strap
+fill(105,90,66);
+quad(150,215,168,214,168,226,153,229);
+//Shadow under Head
+fill(75,53,42);
+ellipse(177,190,50,30);
+//Cowl
+fill(100,60,39);
+beginShape();
+curveVertex(135,120);
+curveVertex(135,120);
+curveVertex(145,120);
+curveVertex(165,121);
+curveVertex(184,125);
+curveVertex(194,129);
+curveVertex(214,136);
+curveVertex(200,201);
+curveVertex(187,199);
+curveVertex(168,192);
+curveVertex(146,170);
+curveVertex(138,151);
+curveVertex(135,130);
+curveVertex(137,130);
+endShape();
+//Light reflecting off of cowl
+fill(115, 68, 32);
+beginShape();
+vertex(203,148);
+vertex(178,147);
+vertex(164,139);
+vertex(152,139);
+vertex(169,159);
+vertex(181,169);
+vertex(189,182);
+vertex(198,182);
+endShape();
+//Light part of the cowl
+fill(149,90,57);
+beginShape();
+vertex(202,138);
+vertex(192,202);
+vertex(197,207);
+vertex(212,152);
+vertex(214,134);
+vertex(209,132);
+endShape();
+popMatrix();
+},
+jedi: function(x,y,Size){
+pushMatrix();
+translate(x,y);
+scale(Size/400);
+translate(-200,-210);
+noStroke();
+//Hand
+fill(120,108,93);
+quad(193,208,190,239,179,238,169,204);
+//Back Arm
+fill(48, 36, 22);
+beginShape();
+vertex(167,113);
+vertex(174,133);
+vertex(184,175);
+vertex(189,194);
+vertex(193,205);
+vertex(197,210);
+vertex(177,216);
+endShape();
+//Inner Cloak
+fill(26,22,12);
+beginShape();
+vertex(162,398);
+vertex(169,401);
+vertex(173,408);
+vertex(171,412);
+vertex(165,414);
+vertex(150,413);
+endShape();
+beginShape();
+vertex(134,110);
+vertex(175,105);
+vertex(188,234);
+vertex(161,415);
+vertex(114,409);
+vertex(110,402);
+vertex(132,186);
+endShape();
+//Cloak
+fill(41, 33, 23);
+beginShape();
+vertex(118,66);
+vertex(115,79);
+vertex(115,104);
+vertex(176,101);
+vertex(170,67);
+endShape();
+fill(53,43,31);
+beginShape();
+vertex(126,10);
+vertex(133,6);
+vertex(150,5);
+vertex(168,7);
+vertex(177,12);
+vertex(180,17);
+vertex(181,31);
+vertex(181,50);
+vertex(178,64);
+vertex(167,84);
+vertex(142,75);
+vertex(126,70);
+vertex(116,67);
+vertex(108,65);
+vertex(118,57);
+vertex(123,51);
+vertex(125,35);
+vertex(125,21);
+endShape();
+fill(64, 52, 38);
+beginShape();
+vertex(146,12);
+vertex(148,27);
+vertex(150,41);
+vertex(146,56);
+vertex(148,57);
+vertex(155,47);
+vertex(156,26);
+vertex(153,13);
+endShape();
+//Lightsaber
+for (var Size = 0; Size < 20; Size ++){
+stroke(0, 209, 56,10);
+strokeWeight(Size);
+line(178,276,384,313);
+}
+strokeWeight(3);
+stroke(255);
+line(178,276,384,313);
+noStroke();
+//Lightsaber Handle
+fill(141,141,147);
+quad(116,258,181,271,179,280,115,269);
+//Hand
+fill(95,61,51);
+beginShape();
+vertex(130,257);
+vertex(129,280);
+vertex(132,283);
+vertex(134,279);
+vertex(140,282);
+vertex(145,275);
+vertex(147,278);
+vertex(149,282);
+vertex(150,278);
+vertex(145,257);
+endShape();
+//Arm
+fill(120,108,93);
+quad(127,222,127,258,149,258,150,217);
+stroke(74,64,55);
+strokeWeight(2);
+line(128,243,148,239);
+noStroke();
+strokeWeight(1);
+fill(48, 36, 22);
+beginShape();
+vertex(125,104);
+vertex(118,124);
+vertex(126,212);
+vertex(124,225);
+vertex(155,225);
+vertex(157,181);
+vertex(163,129);
+vertex(174,111);
+endShape();
+//Cloak
+fill(53,43,31);
+beginShape();
+vertex(111,99);
+vertex(117,95);
+vertex(138,92);
+vertex(175,97);
+vertex(179,105);
+vertex(178,116);
+vertex(168,111);
+vertex(148,110);
+vertex(116,111);
+endShape();
+popMatrix();
+},
+chewbacca: function(x,y,Size){
+pushMatrix();
+translate(x,y);
+scale(Size/500);
+translate(-200,-290);
+noStroke();
+//CrossBow
+fill(87, 55, 20);
+beginShape();
+vertex(277,228);
+vertex(273,219);
+vertex(259,211);
+vertex(242,207);
+vertex(231,205);
+vertex(219,203);
+vertex(214,216);
+vertex(228,219);
+vertex(235,220);
+vertex(247,223);
+vertex(255,227);
+endShape();
+//Nose
+fill(30);
+beginShape();
+vertex(218,68);
+vertex(224,73);
+vertex(224,76);
+vertex(221,77);
+vertex(204,76);
+endShape();
+//Chest
+fill(97, 58, 0);
+beginShape();
+vertex(140,93);
+vertex(161,89);
+vertex(201,90);
+vertex(218,97);
+vertex(218,312);
+vertex(151,308);
+endShape();
+//Fur Patterns on Chest
+fill(117, 79, 26);
+beginShape();
+vertex(218,182);
+vertex(210,188);
+vertex(187,197);
+vertex(171,208);
+vertex(160,219);
+vertex(149,228);
+vertex(153,303);
+vertex(219,305);
+endShape();
+//Back Leg
+fill(77, 56, 2);
+beginShape();
+vertex(172,502);
+vertex(246,495);
+vertex(247,484);
+vertex(246,481);
+vertex(232,463);
+vertex(206,461);
+vertex(219,309);
+vertex(178,313);
+endShape();
+//Front Leg
+fill(97, 64, 11);
+beginShape();
+vertex(150,308);
+vertex(166,433);
+vertex(137,578);
+vertex(205,573);
+vertex(203,557);
+vertex(190,549);
+vertex(172,545);
+vertex(203,435);
+vertex(211,310);
+endShape();
+//Strap
+fill(71, 48, 37);
+beginShape();
+vertex(169,301);
+vertex(177,283);
+vertex(191,253);
+vertex(200,207);
+vertex(208,93);
+vertex(218,94);
+vertex(221,112);
+vertex(218,161);
+vertex(214,189);
+vertex(205,236);
+vertex(202,255);
+vertex(188,286);
+vertex(176,311);
+endShape();
+//Pouch
+fill(79, 37, 0);
+beginShape();
+vertex(138,295);
+vertex(180,294);
+vertex(176,344);
+vertex(168,350);
+vertex(156,351);
+vertex(143,347);
+vertex(136,340);
+endShape();
+//Head
+fill(92, 59, 10);
+beginShape();
+vertex(139,94);
+vertex(148,79);
+vertex(151,60);
+vertex(154,44);
+vertex(154,26);
+vertex(162,12);
+vertex(181,6);
+vertex(196,6);
+vertex(215,13);
+vertex(222,24);
+vertex(222,39);
+vertex(214,53);
+vertex(214,59);
+vertex(216,64);
+vertex(218,69);
+vertex(214,91);
+vertex(210,97);
+endShape();
+//Eye
+fill(30);
+ellipse(210,50,9,5);
+//Arm
+fill(74, 47, 16);
+beginShape();
+vertex(213,240);
+vertex(236,237);
+vertex(241,239);
+vertex(242,246);
+vertex(240,249);
+vertex(243,252);
+vertex(243,257);
+vertex(213,263);
+endShape();
+fill(97, 63, 22);
+beginShape();
+vertex(144,204);
+vertex(139,273);
+vertex(233,260);
+vertex(218,249);
+vertex(228,238);
+vertex(177,240);
+vertex(184,184);
+vertex(143,168);
+endShape();
+fill(74, 47, 13);
+beginShape();
+vertex(141,109);
+vertex(143,227);
+vertex(153,186);
+vertex(157,220);
+vertex(167,185);
+vertex(178,213);
+vertex(197,110);
+endShape();
+//Light Spots on Face
+fill(105, 70, 25);
+beginShape();
+vertex(203,57);
+vertex(198,60);
+vertex(191,73);
+vertex(190,86);
+vertex(196,79);
+vertex(200,73);
+vertex(206,65);
+endShape();
+beginShape();
+vertex(209,70);
+vertex(204,77);
+vertex(204,90);
+vertex(207,84);
+vertex(211,75);
+endShape();
+beginShape();
+vertex(185,26);
+vertex(177,35);
+vertex(174,46);
+vertex(169,62);
+vertex(170,85);
+vertex(172,79);
+vertex(173,69);
+vertex(177,53);
+vertex(180,45);
+vertex(187,33);
+endShape();
+beginShape();
+vertex(184,335);
+vertex(188,356);
+vertex(193,395);
+vertex(188,426);
+vertex(193,418);
+vertex(197,397);
+vertex(198,378);
+vertex(193,357);
+vertex(190,336);
+endShape();
+beginShape();
+vertex(169,385);
+vertex(171,404);
+vertex(172,423);
+vertex(170,454);
+vertex(162,475);
+vertex(167,473);
+vertex(173,464);
+vertex(174,448);
+vertex(176,411);
+vertex(176,388);
+endShape();
+beginShape();
+vertex(150,234);
+vertex(150,255);
+vertex(167,261);
+vertex(213,259);
+vertex(213,255);
+vertex(194,253);
+vertex(155,246);
+endShape();
+beginShape();
+vertex(194,137);
+vertex(194,149);
+vertex(193,166);
+vertex(188,183);
+vertex(193,181);
+vertex(196,171);
+vertex(198,154);
+endShape();
+beginShape();
+vertex(157,102);
+vertex(172,92);
+vertex(185,90);
+vertex(194,98);
+vertex(188,100);
+vertex(174,98);
+vertex(167,104);
+endShape();
+//Lightish Spots
+fill(84, 53, 14);
+beginShape();
+vertex(153,127);
+vertex(155,148);
+vertex(154,175);
+vertex(159,169);
+vertex(159,150);
+vertex(158,135);
+endShape();
+beginShape();
+vertex(163,117);
+vertex(172,134);
+vertex(173,150);
+vertex(168,175);
+vertex(166,183);
+vertex(174,163);
+vertex(180,126);
+vertex(173,122);
+endShape();
+beginShape();
+vertex(191,20);
+vertex(191,33);
+vertex(191,44);
+vertex(178,61);
+vertex(185,61);
+vertex(194,55);
+vertex(198,36);
+vertex(193,20);
+endShape();
+beginShape();
+vertex(158,45);
+vertex(158,55);
+vertex(155,67);
+vertex(152,80);
+vertex(156,77);
+vertex(159,68);
+vertex(161,49);
+endShape();
+beginShape();
+vertex(165,23);
+vertex(180,11);
+vertex(188,14);
+vertex(182,17);
+vertex(172,27);
+endShape();
+beginShape();
+vertex(183,447);
+vertex(180,461);
+vertex(177,483);
+vertex(173,495);
+vertex(181,485);
+vertex(185,464);
+vertex(188,450);
+endShape();
+beginShape();
+vertex(152,538);
+vertex(163,559);
+vertex(176,562);
+vertex(178,557);
+vertex(160,536);
+endShape();
+beginShape();
+vertex(201,468);
+vertex(207,472);
+vertex(233,476);
+vertex(235,481);
+vertex(229,485);
+vertex(208,485);
+vertex(197,478);
+endShape();
+//Slightly Lighter
+fill(97, 64, 23);
+beginShape();
+vertex(200,20);
+vertex(206,29);
+vertex(206,36);
+vertex(213,37);
+vertex(213,24);
+endShape();
+beginShape();
+vertex(181,65);
+vertex(182,70);
+vertex(182,84);
+vertex(189,89);
+vertex(200,97);
+vertex(201,89);
+vertex(195,87);
+vertex(190,74);
+vertex(182,62);
+endShape();
+beginShape();
+vertex(158,83);
+vertex(152,92);
+vertex(144,100);
+vertex(152,104);
+vertex(161,95);
+vertex(161,84);
+endShape();
+fill(128, 82, 26);
+beginShape();
+vertex(200,272);
+vertex(205,286);
+vertex(213,297);
+vertex(213,295);
+vertex(211,288);
+vertex(210,275);
+endShape();
+beginShape();
+vertex(159,276);
+vertex(167,281);
+vertex(176,289);
+vertex(178,281);
+vertex(170,273);
+endShape();
+beginShape();
+vertex(181,210);
+vertex(184,223);
+vertex(187,227);
+vertex(188,236);
+vertex(190,223);
+vertex(186,208);
+endShape();
+fill(71, 45, 16);
+quad(177,225,277,227,277,240,179,243);
+fill(87, 55, 20);
+beginShape();
+vertex(276,227);
+vertex(274,230);
+vertex(271,234);
+vertex(263,239);
+vertex(244,254);
+vertex(229,258);
+vertex(205,262);
+vertex(207,276);
+vertex(220,274);
+vertex(241,271);
+vertex(253,265);
+vertex(266,255);
+vertex(277,242);
+endShape();
+strokeWeight(2);
+stroke(71, 45, 19);
+line(180,235,207,271);
+line(219,208,191,226);
+popMatrix();
+},
+luke: function(x,y,Size){
+pushMatrix();
+translate(x,y);
+scale(Size/470);
+translate(-210,-350);
+noStroke();
+//Second Blaster Handle
+fill(100);
+quad(201,273,200,304,209,307,213,274);
+//Hand
+fill(166,141,125);
+beginShape();
+vertex(189,279);
+vertex(203,274);
+vertex(209,276);
+vertex(212,278);
+vertex(206,281);
+vertex(200,280);
+vertex(209,282);
+vertex(213,284);
+vertex(213,285);
+vertex(206,286);
+vertex(200,286);
+vertex(203,285);
+vertex(209,288);
+vertex(211,290);
+vertex(202,292);
+vertex(209,294);
+vertex(205,296);
+vertex(196,302);
+vertex(187,300);
+endShape();
+//Arm
+fill(190);
+quad(178,213,181,270,168,278,154,234);
+pushMatrix();
+translate(0,200);
+//Back Leg
+fill(77, 65, 45);
+beginShape();
+vertex(183,302);
+vertex(201,300);
+vertex(209,223);
+vertex(196,160);
+vertex(160,172);
+vertex(180,224);
+endShape();
+beginShape();
+vertex(183,301);
+vertex(177,326);
+vertex(181,330);
+vertex(240,328);
+vertex(242,318);
+vertex(233,309);
+vertex(215,306);
+vertex(200,299);
+endShape();
+//Front Leg
+fill(97, 83, 58);
+beginShape();
+vertex(138,169);
+vertex(152,266);
+vertex(135,369);
+vertex(162,364);
+vertex(179,266);
+vertex(178,167);
+endShape();
+beginShape();
+vertex(162,362);
+vertex(167,366);
+vertex(179,371);
+vertex(197,371);
+vertex(203,376);
+vertex(205,390);
+vertex(140,392);
+vertex(135,368);
+endShape();
+popMatrix();
+//Robe
+fill(201, 201, 201);
+beginShape();
+curveVertex(131,377);
+curveVertex(131,377);
+curveVertex(137,379);
+curveVertex(158,379);
+curveVertex(185,376);
+curveVertex(200,369);
+curveVertex(204,361);
+curveVertex(198,338);
+curveVertex(190,323);
+curveVertex(180,301);
+curveVertex(171,268);
+curveVertex(178,218);
+curveVertex(171,195);
+curveVertex(160,185);
+curveVertex(127,186);
+curveVertex(113,195);
+curveVertex(115,222);
+curveVertex(119,249);
+curveVertex(116,324);
+curveVertex(130,373);
+curveVertex(130,373);
+endShape();
+fill(195);
+beginShape();
+curveVertex(137,177);
+curveVertex(137,177);
+curveVertex(144,183);
+curveVertex(160,201);
+curveVertex(163,215);
+curveVertex(164,248);
+curveVertex(159,256);
+curveVertex(129,284);
+curveVertex(115,197);
+curveVertex(119,191);
+curveVertex(128,186);
+curveVertex(128,186);
+endShape();
+//Neck
+fill(166,141,125);
+beginShape();
+vertex(127,188);
+vertex(133,195);
+vertex(145,206);
+vertex(151,215);
+vertex(150,200);
+vertex(150,186);
+endShape();
+//Head
+beginShape();
+curveVertex(150,187);
+curveVertex(150,187);
+curveVertex(149,173);
+curveVertex(162,177);
+curveVertex(168,168);
+curveVertex(169,156);
+curveVertex(167,134);
+curveVertex(163,126);
+curveVertex(128,125);
+curveVertex(123,130);
+curveVertex(123,141);
+curveVertex(120,155);
+curveVertex(122,176);
+curveVertex(130,193);
+curveVertex(130,193);
+endShape();
+//Nose
+beginShape();
+vertex(169,155);
+vertex(173,164);
+vertex(161,165);
+endShape();
+//Hair
+fill(82, 65, 52);
+beginShape();
+curveVertex(115,157);
+curveVertex(110,157);
+curveVertex(113,173);
+curveVertex(129,171);
+curveVertex(146,156);
+curveVertex(150,151);
+curveVertex(156,144);
+curveVertex(163,138);
+curveVertex(171,138);
+curveVertex(172,120);
+curveVertex(164,116);
+curveVertex(149,114);
+curveVertex(119,114);
+curveVertex(113,118);
+curveVertex(106,129);
+curveVertex(108,141);
+curveVertex(108,141);
+endShape();
+//Eye
+fill(255);
+ellipse(162,148,6,4);
+fill(5, 117, 27);
+ellipse(164,148,4,3);
+//Mouth
+stroke(20);
+line(164,168,168,169);
+
+noStroke();
+//Blaster
+fill(100);
+quad(172,267,175,281,185,276,188,269);
+quad(153,255,409,308,406,317,154,264);
+//Arm
+fill(210);
+beginShape();
+vertex(133,213);
+vertex(128,290);
+vertex(189,268);
+vertex(195,314);
+vertex(105,320);
+vertex(94,214);
+vertex(107,197);
+vertex(122,193);
+endShape();
+//Belt
+fill(84, 32, 3);
+beginShape();
+vertex(119,333);
+curveVertex(125,337);
+curveVertex(132,338);
+curveVertex(149,340);
+curveVertex(160,340);
+curveVertex(168,339);
+curveVertex(172,338);
+curveVertex(179,336);
+curveVertex(187,329);
+curveVertex(190,327);
+curveVertex(195,335);
+curveVertex(182,343);
+curveVertex(167,347);
+curveVertex(144,349);
+curveVertex(129,346);
+vertex(121,344);
+endShape();
+//Holster
+quad(106,328,124,324,133,361,123,362);
+popMatrix();
+},
+clone: function(x,y,Size){
+pushMatrix();
+translate(x,y);
+scale(Size/470);
+translate(-230,-300);
+noStroke();
+//Hands
+fill(64, 130, 50);
+quad(220,277,232,294,249,283,228,262);
+//Body
+fill(30);
+quad(84,151,144,145,153,176,89,183);
+quad(78,155,73,212,92,208,95,154);
+quad(156,146,182,187,189,182,173,145);
+quad(177,201,188,230,197,226,191,196);
+quad(79,205,73,235,49,238,54,205);
+quad(42,272,42,313,64,306,61,273);
+//Right Arm Armor
+fill(220);
+quad(174,166,186,161,199,201,184,203);
+quad(199,224,231,263,219,279,171,247);
+fill(210);
+beginShape();
+vertex(155,156);
+vertex(198,170);
+vertex(189,155);
+vertex(186,150);
+vertex(181,145);
+vertex(173,141);
+vertex(151,137);
+endShape();
+//Body Armor
+fill(210);
+quad(78,198,87,320,193,295,166,173);
+fill(230);
+beginShape();
+vertex(88,256);
+vertex(95,253);
+vertex(105,245);
+vertex(114,238);
+vertex(120,234);
+vertex(129,233);
+vertex(141,234);
+vertex(150,239);
+vertex(161,243);
+vertex(172,246);
+vertex(185,249);
+vertex(191,220);
+vertex(190,200);
+vertex(185,181);
+vertex(174,156);
+vertex(163,146);
+vertex(145,143);
+vertex(144,153);
+vertex(141,162);
+vertex(134,167);
+vertex(124,169);
+vertex(111,169);
+vertex(103,165);
+vertex(93,155);
+vertex(89,149);
+vertex(76,155);
+vertex(77,156);
+vertex(81,162);
+vertex(82,170);
+vertex(84,183);
+vertex(85,192);
+vertex(80,201);
+vertex(75,206);
+vertex(72,208);
+endShape();
+//Back Leg
+fill(30);
+quad(213,383,218,404,243,386,234,364);
+quad(218,483,216,503,235,498,232,483);
+//Back Leg Armor
+fill(220);
+quad(141,309,213,390,238,365,196,286);
+beginShape();
+vertex(216,399);
+vertex(216,489);
+vertex(224,489);
+vertex(234,491);
+vertex(236,486);
+vertex(246,388);
+vertex(242,381);
+endShape();
+beginShape();
+vertex(213,500);
+vertex(212,538);
+vertex(225,539);
+vertex(242,540);
+vertex(254,541);
+vertex(271,539);
+vertex(278,534);
+vertex(278,527);
+vertex(269,519);
+vertex(257,517);
+vertex(247,515);
+vertex(234,498);
+endShape();
+fill(210);
+beginShape();
+vertex(224,382);
+vertex(227,379);
+vertex(233,373);
+vertex(240,360);
+vertex(243,363);
+vertex(244,370);
+vertex(247,379);
+vertex(246,390);
+vertex(237,388);
+vertex(231,384);
+endShape();
+//Front Leg
+fill(30);
+quad(102,374,89,417,120,426,141,384);
+beginShape();
+vertex(71,479);
+vertex(66,488);
+vertex(75,501);
+vertex(85,503);
+vertex(89,503);
+vertex(89,494);
+endShape();
+//Front Leg Armor
+fill(230);
+beginShape();
+vertex(79,289);
+vertex(101,395);
+vertex(109,385);
+vertex(116,383);
+vertex(125,382);
+vertex(133,385);
+vertex(141,393);
+vertex(154,288);
+endShape();
+beginShape();
+vertex(95,400);
+vertex(76,436);
+vertex(75,447);
+vertex(75,455);
+vertex(75,472);
+vertex(70,478);
+vertex(74,490);
+vertex(77,498);
+vertex(90,500);
+vertex(105,463);
+vertex(116,438);
+vertex(132,423);
+endShape();
+beginShape();
+vertex(70,486);
+vertex(71,494);
+vertex(74,502);
+vertex(85,504);
+vertex(88,504);
+vertex(94,512);
+vertex(101,516);
+vertex(118,520);
+vertex(123,520);
+vertex(126,523);
+vertex(127,531);
+vertex(126,537);
+vertex(119,537);
+vertex(109,537);
+vertex(80,536);
+vertex(61,532);
+vertex(56,525);
+vertex(69,478);
+endShape();
+fill(220);
+beginShape();
+vertex(108,394);
+vertex(120,394);
+vertex(127,394);
+vertex(136,391);
+vertex(144,386);
+vertex(145,392);
+vertex(146,397);
+vertex(145,411);
+vertex(134,424);
+vertex(131,430);
+vertex(122,418);
+vertex(119,411);
+vertex(115,404);
+endShape();
+//Belt
+fill(230);
+quad(82,289,191,284,199,296,87,309);
+fill(240);
+quad(82,281,93,322,125,319,121,283);
+quad(139,278,149,318,170,311,167,281);
+quad(179,276,195,303,208,295,198,273);
+//Sweep Blaster
+fill(120);
+quad(386,299,453,285,464,302,382,325);
+fill(130);
+beginShape();
+vertex(227,322);
+vertex(223,296);
+vertex(257,294);
+vertex(260,321);
+vertex(255,321);
+vertex(253,300);
+vertex(232,300);
+vertex(237,324);
+endShape();
+fill(90);
+beginShape();
+vertex(176,351);
+vertex(168,375);
+vertex(253,361);
+vertex(249,316);
+vertex(179,337);
+endShape();
+fill(80);
+quad(250,318,382,291,384,308,241,336);
+quad(257,356,389,331,383,326,255,339);
+fill(120);
+quad(243,325,390,298,397,326,233,355);
+fill(140);
+quad(140,318,145,355,155,357,158,323);
+quad(154,339,177,346,177,359,148,358);
+fill(150);
+quad(175,330,175,371,249,355,243,319);
+fill(189, 189, 189);
+quad(193,334,191,343,231,339,227,328);
+fill(130);
+quad(266,330,270,337,284,326,269,325);
+quad(310,321,308,328,324,327,323,314);
+quad(352,310,360,322,368,320,375,302);
+fill(80);
+quad(250,332,372,308,380,315,256,338);
+fill(140);
+quad(368,295,380,335,398,330,384,286);
+fill(170);
+beginShape();
+vertex(161,374);
+vertex(250,357);
+vertex(242,310);
+vertex(254,311);
+vertex(259,362);
+vertex(176,382);
+endShape();
+//Hands
+fill(50);
+quad(157,333,161,333,160,351,156,352);
+fill(50);
+quad(233,294,235,304,252,302,248,285);
+fill(64, 130, 50);
+quad(142,329,160,331,156,353,135,340);
+//Left Arm
+fill(240);
+beginShape();
+vertex(77,156);
+vertex(64,167);
+vertex(56,176);
+vertex(53,187);
+vertex(52,215);
+vertex(70,221);
+vertex(77,215);
+vertex(82,206);
+vertex(87,184);
+vertex(87,175);
+endShape();
+beginShape();
+vertex(47,222);
+vertex(54,229);
+vertex(59,231);
+vertex(68,232);
+vertex(78,226);
+vertex(65,286);
+vertex(62,283);
+vertex(55,280);
+vertex(41,281);
+endShape();
+quad(41,313,66,291,145,326,133,345);
+fill(230);
+beginShape();
+vertex(42,275);
+vertex(39,285);
+vertex(38,292);
+vertex(37,312);
+vertex(45,305);
+vertex(53,298);
+vertex(63,295);
+vertex(52,288);
+endShape();
+//Green Stripes
+fill(64, 130, 50);
+quad(56,231,51,279,58,280,66,233);
+quad(41,279,38,310,44,306,49,283);
+quad(52,305,135,339,140,332,59,298);
+beginShape();
+vertex(58,217);
+vertex(69,163);
+vertex(75,159);
+vertex(81,169);
+vertex(67,219);
+endShape();
+//Head
+fill(230);
+beginShape();
+curveVertex(82,145);
+curveVertex(82,145);
+curveVertex(150,148);
+curveVertex(149,90);
+curveVertex(133,76);
+curveVertex(120,74);
+curveVertex(108,76);
+curveVertex(93,90);
+curveVertex(89,127);
+curveVertex(89,127);
+endShape();
+fill(220);
+quad(88,131,149,133,148,148,83,146);
+fill(64, 130, 50);
+quad(92,102,153,105,154,116,90,112);
+fill(240);
+quad(110,102,124,102,123,134,109,133);
+fill(210);
+quad(129,125,142,127,142,141,130,141);
+fill(60);
+quad(155,109,136,110,136,113,156,117);
+popMatrix();
+},
+phasma: function(x,y,Size){
+pushMatrix();
+translate(x,y);
+scale(Size/600);
+translate(-260,-330);
+noStroke();
+//Cape
+fill(46,44,42);
+quad(363,201,338,638,255,616,283,126);
+//Body
+fill(150);
+quad(189,238,209,118,339,138,311,293);
+fill(50);
+quad(186,334,188,278,311,289,300,353);
+quad(253,203,236,282,257,286,276,208);
+fill(140);
+quad(188,288,310,308,313,287,187,269);
+beginShape();
+vertex(188,239);
+vertex(187,281);
+vertex(244,283);
+vertex(261,199);
+vertex(252,199);
+vertex(237,203);
+vertex(214,213);
+vertex(199,224);
+endShape();
+beginShape();
+vertex(271,203);
+vertex(250,283);
+vertex(313,295);
+vertex(316,263);
+vertex(314,253);
+vertex(305,239);
+vertex(291,221);
+vertex(274,206);
+endShape();
+fill(60);
+beginShape();
+vertex(328,173);
+vertex(260,250);
+vertex(272,266);
+vertex(357,201);
+vertex(354,176);
+endShape();
+fill(160);
+beginShape();
+vertex(309,142);
+vertex(314,164);
+vertex(324,180);
+vertex(342,188);
+vertex(358,188);
+vertex(340,125);
+endShape();
+quad(316,187,265,242,281,260,359,200);
+quad(264,247,279,265,272,274,255,252);
+//Back Leg + Leg Armor
+fill(100);
+quad(170,563,169,576,192,580,193,568);
+fill(50);
+quad(183,434,182,478,216,476,222,448);
+fill(130);
+beginShape();
+vertex(246,373);
+vertex(224,453);
+vertex(214,450);
+vertex(205,442);
+vertex(193,443);
+vertex(181,450);
+vertex(185,310);
+vertex(194,324);
+vertex(202,332);
+vertex(219,336);
+vertex(244,337);
+endShape();
+beginShape();
+vertex(181,471);
+vertex(186,470);
+vertex(197,462);
+vertex(201,456);
+vertex(204,454);
+vertex(216,459);
+vertex(217,474);
+vertex(194,573);
+vertex(169,566);
+endShape();
+beginShape();
+vertex(169,574);
+vertex(169,580);
+vertex(166,585);
+vertex(157,592);
+vertex(141,597);
+vertex(123,597);
+vertex(118,597);
+vertex(117,617);
+vertex(127,617);
+vertex(145,620);
+vertex(165,619);
+vertex(183,614);
+vertex(186,612);
+vertex(192,611);
+vertex(192,580);
+endShape();
+fill(120);
+beginShape();
+vertex(215,450);
+vertex(209,445);
+vertex(201,444);
+vertex(192,444);
+vertex(184,449);
+vertex(184,460);
+vertex(189,466);
+vertex(198,465);
+vertex(215,462);
+endShape();
+//Leg + Leg Armor
+fill(50);
+quad(247,452,251,489,284,483,288,453);
+fill(100);
+quad(251,566,256,584,274,596,273,565);
+fill(140);
+beginShape();
+vertex(256,581);
+vertex(253,593);
+vertex(246,604);
+vertex(235,611);
+vertex(210,613);
+vertex(210,629);
+vertex(225,634);
+vertex(246,635);
+vertex(261,632);
+vertex(279,627);
+vertex(274,591);
+endShape();
+beginShape();
+vertex(261,454);
+vertex(268,454);
+vertex(278,456);
+vertex(287,465);
+vertex(302,341);
+vertex(298,336);
+vertex(285,326);
+vertex(267,318);
+vertex(247,324);
+vertex(234,333);
+vertex(244,460);
+endShape();
+quad(245,471,287,472,275,573,251,570);
+fill(130);
+beginShape();
+vertex(251,459);
+vertex(257,457);
+vertex(278,457);
+vertex(283,464);
+vertex(278,469);
+vertex(259,472);
+vertex(248,472);
+endShape();
+//Cape
+fill(46,44,42);
+beginShape();
+vertex(341,122);
+vertex(352,162);
+vertex(347,162);
+vertex(335,162);
+vertex(300,162);
+vertex(264,151);
+vertex(223,135);
+vertex(207,116);
+vertex(228,86);
+endShape();
+fill(56, 54, 52);
+beginShape();
+vertex(359,198);
+vertex(257,634);
+vertex(264,637);
+vertex(267,639);
+vertex(283,642);
+vertex(306,644);
+vertex(323,644);
+vertex(337,640);
+endShape();
+//Helmet
+fill(209, 209, 209);
+beginShape();
+curveVertex(250,32);
+curveVertex(250,32);
+curveVertex(256,29);
+curveVertex(263,27);
+curveVertex(273,25);
+curveVertex(298,30);
+curveVertex(315,38);
+curveVertex(318,48);
+curveVertex(316,62);
+curveVertex(311,84);
+curveVertex(311,92);
+curveVertex(315,99);
+curveVertex(315,103);
+curveVertex(307,115);
+curveVertex(273,132);
+curveVertex(267,121);
+curveVertex(248,113);
+curveVertex(225,112);
+curveVertex(214,112);
+curveVertex(210,110);
+curveVertex(218,97);
+curveVertex(230,68);
+curveVertex(230,68);
+endShape();
+fill(200);
+beginShape();
+vertex(280,26);
+vertex(249,114);
+vertex(237,113);
+vertex(212,113);
+vertex(210,107);
+vertex(247,32);
+vertex(260,29);
+vertex(277,27);
+endShape();
+fill(50);
+beginShape();
+vertex(237,56);
+vertex(298,69);
+vertex(298,71);
+vertex(295,75);
+vertex(286,77);
+vertex(267,77);
+vertex(265,74);
+vertex(262,70);
+vertex(256,70);
+vertex(249,71);
+vertex(237,71);
+vertex(230,65);
+endShape();
+stroke(50);
+strokeWeight(2.2);
+line(232,65,231,97);
+line(293,75,269,106);
+noFill();
+pushMatrix();
+translate(250,102);
+rotate(15);
+arc(0,0,35,20,180,360);
+popMatrix();
+noStroke();
+//Arm
+fill(170);
+beginShape();
+vertex(209,119);
+vertex(152,188);
+vertex(146,199);
+vertex(144,215);
+vertex(146,224);
+vertex(192,274);
+vertex(202,253);
+vertex(191,227);
+endShape();
+//Hand
+fill(50);
+quad(250,260,246,269,261,280,269,271);
+//Blaster
+pushMatrix();
+translate(0,70);
+fill(100);
+quad(199,150,328,234,322,241,192,162);
+quad(214,168,196,212,200,215,223,173);
+quad(191,135,215,151,199,174,178,161);
+quad(251,184,260,176,273,185,265,200);
+quad(250,173,277,193,285,189,260,169);
+popMatrix();
+//Hand
+fill(50);
+quad(204,245,219,254,204,279,193,276);
+popMatrix();
+},
+sbd: function(x,y,Size){
+pushMatrix();
+translate(x,y);
+scale(Size/530);
+translate(-260,-330);
+noStroke();
+//Second Arm
+fill(70);
+quad(200,100,154,206,168,229,213,169);
+pushMatrix();
+translate(-10,20);
+fill(40);
+quad(145,190,147,205,182,212,181,200);
+fill(50);
+beginShape();
+vertex(164,114);
+vertex(172,67);
+vertex(178,69);
+vertex(176,85);
+vertex(182,68);
+vertex(187,69);
+vertex(184,85);
+vertex(188,85);
+vertex(198,74);
+vertex(201,78);
+vertex(195,88);
+vertex(190,124);
+endShape();
+fill(60);
+beginShape();
+vertex(142,192);
+vertex(164,105);
+vertex(169,112);
+vertex(173,116);
+vertex(182,117);
+vertex(190,111);
+vertex(186,211);
+vertex(164,196);
+vertex(142,201);
+endShape();
+fill(65);
+quad(186,117,176,205,188,214,191,112);
+popMatrix();
+//Back Leg
+fill(61, 61, 61);
+beginShape();
+vertex(199,319);
+vertex(167,440);
+vertex(185,446);
+vertex(223,328);
+vertex(219,324);
+vertex(212,319);
+vertex(205,317);
+endShape();
+quad(164,452,157,541,166,540,185,457);
+beginShape();
+vertex(157,536);
+vertex(134,554);
+vertex(123,573);
+vertex(170,572);
+vertex(166,560);
+vertex(167,529);
+endShape();
+//Stomach
+fill(33,34,34);
+quad(202,328,205,217,297,228,266,321);
+fill(40);
+quad(206,217,250,223,230,337,203,316);
+stroke(20);
+strokeWeight(2);
+line(248,226,230,327);
+line(205,244,287,251);
+line(280,276,204,273);
+line(206,290,271,299);
+noStroke();
+//Leg Connector
+fill(50);
+beginShape();
+vertex(197,305);
+vertex(210,314);
+vertex(221,322);
+vertex(229,324);
+vertex(235,324);
+vertex(249,319);
+vertex(261,312);
+vertex(269,309);
+vertex(273,309);
+vertex(279,313);
+vertex(282,319);
+vertex(282,324);
+vertex(275,341);
+vertex(246,361);
+vertex(241,366);
+vertex(236,367);
+vertex(234,368);
+vertex(225,368);
+vertex(213,364);
+vertex(202,356);
+vertex(198,329);
+vertex(194,317);
+endShape();
+//Front Leg
+fill(69,70,69);
+beginShape();
+vertex(245,324);
+vertex(228,458);
+vertex(246,459);
+vertex(278,332);
+vertex(272,327);
+vertex(267,325);
+vertex(256,322);
+vertex(247,322);
+endShape();
+beginShape();
+vertex(225,562);
+vertex(205,573);
+vertex(188,593);
+vertex(240,592);
+vertex(233,575);
+vertex(235,562);
+endShape();
+fill(65);
+quad(229,459,223,564,234,563,246,463);
+fill(50);
+ellipse(265,345,30,40);
+ellipse(238,461,25,35);
+fill(45);
+ellipse(174,447,25,35);
+fill(60);
+ellipse(265,345,20,30);
+ellipse(238,461,15,25);
+ellipse(174,447,15,25);
+beginShape();
+vertex(200,232);
+vertex(211,237);
+vertex(295,246);
+vertex(322,203);
+vertex(331,120);
+vertex(197,110);
+endShape();
+pushMatrix();
+translate(264,116);
+rotate(4.4);
+arc(0,0,133,100,180,360);
+popMatrix();
+fill(40);
+beginShape();
+vertex(317,89);
+vertex(312,107);
+vertex(307,126);
+vertex(307,135);
+vertex(301,158);
+vertex(293,185);
+vertex(287,197);
+vertex(282,205);
+vertex(273,219);
+vertex(256,236);
+vertex(244,242);
+vertex(296,247);
+vertex(323,203);
+vertex(331,113);
+endShape();
+beginShape();
+vertex(205,92);
+vertex(204,102);
+vertex(202,122);
+vertex(201,145);
+vertex(201,179);
+vertex(201,206);
+vertex(204,236);
+vertex(198,189);
+vertex(198,106);
+endShape();
+fill(55);
+beginShape();
+vertex(200,175);
+vertex(209,173);
+vertex(237,175);
+vertex(262,181);
+vertex(283,192);
+vertex(287,194);
+vertex(256,235);
+vertex(246,242);
+vertex(208,238);
+vertex(200,173);
+endShape();
+fill(70);
+beginShape();
+vertex(223,81);
+vertex(225,93);
+vertex(230,102);
+vertex(243,108);
+vertex(261,108);
+vertex(277,98);
+vertex(295,78);
+vertex(286,69);
+vertex(252,68);
+vertex(226,76);
+endShape();
+pushMatrix();
+scale(1.5);
+translate(-90,-25);
+fill(40);
+triangle(268,79,276,85,250,135);
+fill(50);
+beginShape();
+vertex(253,73);
+vertex(250,75);
+vertex(245,84);
+vertex(241,95);
+vertex(237,106);
+vertex(237,129);
+vertex(241,136);
+vertex(247,137);
+vertex(253,128);
+vertex(271,84);
+vertex(270,77);
+vertex(265,74);
+endShape();
+popMatrix();
+fill(20);
+ellipse(286,124,20,20);
+fill(184, 0, 0);
+ellipse(286,124,15,20);
+//Arm
+fill(60);
+beginShape();
+vertex(333,290);
+vertex(320,325);
+vertex(324,329);
+vertex(334,316);
+vertex(336,319);
+vertex(331,333);
+vertex(333,336);
+vertex(342,324);
+vertex(345,326);
+vertex(341,337);
+vertex(347,340);
+vertex(366,300);
+endShape();
+fill(80);
+beginShape();
+vertex(350,204);
+vertex(357,224);
+vertex(356,230);
+vertex(356,238);
+vertex(360,246);
+vertex(386,244);
+vertex(393,243);
+vertex(393,232);
+vertex(388,227);
+vertex(383,224);
+vertex(371,192);
+endShape();
+fill(50);
+quad(340,213,385,203,367,175,335,176);
+fill(70);
+quad(357,321,397,237,388,232,358,312);
+fill(70);
+quad(311,103,306,117,338,212,347,214);
+fill(80);
+beginShape();
+vertex(310,100);
+vertex(318,92);
+vertex(333,90);
+vertex(345,100);
+vertex(388,206);
+vertex(375,189);
+vertex(364,184);
+vertex(356,185);
+vertex(347,202);
+vertex(347,217);
+endShape();
+fill(90);
+beginShape();
+vertex(353,238);
+vertex(369,225);
+vertex(386,231);
+vertex(383,254);
+vertex(355,324);
+vertex(355,312);
+vertex(353,298);
+vertex(340,293);
+vertex(335,296);
+vertex(325,310);
+endShape();
+popMatrix();
+},
+electricDroid: function(x, y, Size) {
+    pushMatrix();
+    translate(x, y);
+    scale(Size / 540);
+    translate(-340, -270);
+    stroke(100);
+    strokeWeight(4);
+    line(9, 253, 591, 45);
+    noStroke();
+    fill(100);
+    beginShape();
+    vertex(5, 255);
+    vertex(61, 229);
+    vertex(79, 229);
+    vertex(66, 238);
+    vertex(10, 254);
+    endShape();
+    beginShape();
+    vertex(591, 44);
+    vertex(519, 63);
+    vertex(505, 75);
+    vertex(529, 75);
+    vertex(593, 46);
+    endShape();
+    pushMatrix();
+    translate(100, 0);
+    fill(56, 56, 77);
+    beginShape();
+    vertex(149, 153);
+    vertex(147, 159);
+    vertex(148, 168);
+    vertex(154, 173);
+    vertex(163, 175);
+    vertex(166, 163);
+    vertex(161, 154);
+    endShape();
+    fill(75, 74, 102);
+    quad(174, 97, 148, 153, 161, 162, 190, 126);
+    fill(36, 32, 35);
+    quad(215, 229, 219, 199, 274, 207, 255, 239);
+    beginShape();
+    vertex(220, 202);
+    vertex(221, 129);
+    vertex(230, 129);
+    vertex(231, 204);
+    vertex(238, 204);
+    vertex(241, 126);
+    vertex(249, 127);
+    vertex(246, 204);
+    vertex(254, 205);
+    vertex(260, 127);
+    vertex(268, 128);
+    vertex(264, 204);
+    vertex(265, 214);
+    endShape();
+    beginShape();
+    vertex(220, 152);
+    vertex(233, 142);
+    vertex(243, 149);
+    vertex(264, 146);
+    vertex(277, 165);
+    vertex(289, 120);
+    vertex(276, 92);
+    vertex(206, 96);
+    endShape();
+    //Back Leg
+    fill(76, 76, 97);
+    beginShape();
+    vertex(125, 517);
+    vertex(123, 523);
+    vertex(127, 525);
+    vertex(140, 524);
+    vertex(152, 518);
+    vertex(165, 465);
+    vertex(161, 468);
+    vertex(148, 513);
+    vertex(128, 510);
+    endShape();
+    fill(107, 107, 143);
+    beginShape();
+    vertex(147, 454);
+    vertex(124, 517);
+    vertex(127, 520);
+    vertex(132, 521);
+    vertex(142, 520);
+    vertex(151, 515);
+    vertex(163, 466);
+    endShape();
+    fill(95, 95, 120);
+    quad(150, 374, 149, 474, 163, 470, 169, 377);
+    fill(53, 53, 66);
+    quad(152, 333, 147, 350, 162, 369, 169, 345);
+    quad(151, 391, 177, 389, 179, 381, 151, 381);
+    fill(73, 73, 92);
+    quad(149, 473, 151, 384, 147, 371, 145, 471);
+    beginShape();
+    vertex(207, 242);
+    vertex(201, 244);
+    vertex(195, 251);
+    vertex(195, 259);
+    vertex(188, 271);
+    vertex(195, 276);
+    vertex(205, 264);
+    vertex(209, 267);
+    vertex(212, 265);
+    vertex(218, 256);
+    endShape();
+    quad(187, 263, 181, 255, 149, 334, 155, 334);
+    quad(144, 350, 140, 357, 151, 391, 153, 384);
+    fill(95, 95, 120);
+    quad(186, 260, 199, 275, 171, 350, 154, 335);
+    quad(143, 350, 173, 357, 181, 382, 153, 385);
+    //Torso
+    fill(89, 89, 117);
+    beginShape();
+    vertex(202, 229);
+    vertex(226, 222);
+    vertex(235, 223);
+    vertex(255, 228);
+    vertex(258, 235);
+    vertex(255, 243);
+    vertex(248, 253);
+    vertex(229, 257);
+    vertex(202, 255);
+    vertex(198, 244);
+    endShape();
+    //Front Leg
+    fill(73, 73, 92);
+    quad(248, 271, 269, 290, 274, 260, 256, 253);
+    quad(249, 341, 247, 369, 270, 369, 266, 342);
+    quad(253, 367, 244, 364, 244, 378, 248, 380);
+    beginShape();
+    vertex(277, 499);
+    vertex(250, 539);
+    vertex(233, 535);
+    vertex(235, 545);
+    vertex(251, 546);
+    vertex(280, 505);
+    vertex(276, 495);
+    endShape();
+    fill(115, 114, 140);
+    beginShape();
+    vertex(259, 488);
+    vertex(235, 531);
+    vertex(233, 537);
+    vertex(236, 539);
+    vertex(250, 540);
+    vertex(278, 497);
+    endShape();
+    beginShape();
+    vertex(248, 235);
+    vertex(247, 270);
+    vertex(259, 263);
+    vertex(267, 259);
+    vertex(275, 262);
+    vertex(272, 249);
+    vertex(263, 240);
+    vertex(255, 236);
+    endShape();
+    quad(261, 277, 249, 355, 272, 351, 276, 288);
+    quad(247, 365, 279, 365, 278, 380, 248, 377);
+    fill(95, 95, 120);
+    quad(254, 270, 262, 278, 249, 354, 244, 344);
+    beginShape();
+    vertex(249, 377);
+    vertex(268, 502);
+    vertex(278, 499);
+    vertex(270, 409);
+    vertex(272, 395);
+    vertex(279, 379);
+    endShape();
+    fill(82, 82, 110);
+    quad(251, 378, 269, 502, 260, 496, 243, 377);
+    //Body
+    fill(62, 62, 92);
+    quad(289, 83, 180, 85, 196, 58, 233, 54);
+    fill(50);
+    beginShape();
+    vertex(280, 80);
+    vertex(265, 81);
+    vertex(243, 69);
+    vertex(232, 48);
+    vertex(196, 55);
+    vertex(191, 67);
+    vertex(188, 83);
+    vertex(175, 102);
+    vertex(175, 109);
+    vertex(189, 140);
+    vertex(196, 156);
+    vertex(254, 147);
+    vertex(280, 99);
+    endShape();
+    fill(40);
+    beginShape();
+    vertex(179, 96);
+    vertex(191, 98);
+    vertex(210, 115);
+    vertex(243, 98);
+    vertex(274, 100);
+    vertex(272, 82);
+    vertex(174, 86);
+    endShape();
+    fill(65, 65, 94);
+    beginShape();
+    vertex(191, 134);
+    vertex(200, 119);
+    vertex(209, 102);
+    vertex(215, 99);
+    vertex(232, 134);
+    vertex(240, 146);
+    vertex(202, 154);
+    endShape();
+    fill(67, 67, 92);
+    beginShape();
+    vertex(223, 145);
+    vertex(245, 134);
+    vertex(263, 142);
+    vertex(268, 186);
+    vertex(225, 197);
+    endShape();
+    quad(201, 154, 187, 146, 194, 188, 212, 195);
+    fill(82, 82, 110);
+    beginShape();
+    vertex(218, 229);
+    vertex(196, 145);
+    vertex(198, 135);
+    vertex(211, 150);
+    vertex(219, 132);
+    vertex(223, 135);
+    vertex(236, 225);
+    endShape();
+    beginShape();
+    vertex(226, 130);
+    vertex(239, 122);
+    vertex(256, 132);
+    vertex(268, 143);
+    vertex(287, 146);
+    vertex(294, 142);
+    vertex(308, 122);
+    vertex(308, 93);
+    vertex(291, 77);
+    vertex(280, 72);
+    vertex(266, 81);
+    vertex(252, 102);
+    vertex(235, 110);
+    endShape();
+    beginShape();
+    vertex(190, 80);
+    vertex(188, 91);
+    vertex(189, 111);
+    vertex(195, 124);
+    vertex(199, 138);
+    vertex(188, 156);
+    vertex(172, 101);
+    vertex(174, 85);
+    vertex(185, 80);
+    endShape();
+    beginShape();
+    vertex(229, 203);
+    vertex(264, 197);
+    vertex(273, 209);
+    vertex(226, 220);
+    vertex(194, 211);
+    vertex(196, 198);
+    endShape();
+    fill(199, 0, 0);
+    ellipse(216, 176, 15, 22);
+    fill(60);
+    quad(347, 234, 364, 257, 331, 265, 331, 233);
+    quad(270, 272, 240, 285, 242, 292, 283, 279);
+    fill(82, 82, 112);
+    quad(300, 141, 323, 249, 350, 248, 339, 135);
+    fill(90, 90, 122);
+    quad(325, 145, 336, 248, 351, 249, 336, 135);
+    fill(96, 96, 133);
+    beginShape();
+    vertex(323, 249);
+    vertex(261, 273);
+    vertex(274, 276);
+    vertex(277, 276);
+    vertex(275, 278);
+    vertex(270, 285);
+    vertex(366, 258);
+    vertex(363, 254);
+    vertex(354, 251);
+    vertex(347, 254);
+    vertex(350, 246);
+    endShape();
+    fill(71, 71, 99);
+    beginShape();
+    vertex(272, 102);
+    vertex(269, 119);
+    vertex(282, 139);
+    vertex(298, 154);
+    vertex(327, 157);
+    vertex(350, 144);
+    vertex(354, 124);
+    vertex(338, 99);
+    vertex(302, 92);
+    endShape();
+    fill(75, 75, 107);
+    beginShape();
+    vertex(285, 138);
+    vertex(304, 135);
+    vertex(320, 113);
+    vertex(312, 101);
+    vertex(290, 97);
+    vertex(281, 121);
+    endShape();
+    fill(75, 75, 107);
+    beginShape();
+    curveVertex(192, 31);
+    curveVertex(192, 31);
+    curveVertex(192, 67);
+    curveVertex(212, 93);
+    curveVertex(241, 76);
+    curveVertex(249, 45);
+    curveVertex(250, 25);
+    curveVertex(245, 10);
+    curveVertex(223, 0);
+    curveVertex(223, 0);
+    endShape();
+    fill(89, 89, 125);
+    beginShape();
+    curveVertex(222, 8);
+    curveVertex(222, 8);
+    curveVertex(219, 91);
+    curveVertex(195, 68);
+    curveVertex(190, 35);
+    curveVertex(196, 11);
+    curveVertex(224, 0);
+    curveVertex(224, 0);
+    endShape();
+    fill(61, 61, 87);
+    quad(201, 36, 233, 38, 232, 45, 204, 45);
+    fill(30);
+    quad(213, 73, 209, 86, 226, 86, 222, 76);
+    beginShape();
+    vertex(216, 3);
+    vertex(214, 24);
+    vertex(222, 25);
+    vertex(228, 3);
+    vertex(223, 2);
+    endShape();
+    fill(50);
+    ellipse(219, 60, 20, 25);
+    fill(50);
+    ellipse(204, 41, 12, 12);
+    ellipse(233, 45, 12, 12);
+    fill(200, 0, 0);
+    ellipse(204, 41, 8, 8);
+    ellipse(233, 45, 8, 8);
+    stroke(20);
+    strokeWeight(2);
+    line(214, 54, 218, 72);
+    line(224, 70, 224, 53);
+    popMatrix();
+    popMatrix();
+},
+darthmaul: function(x, y, Size) {
+    pushMatrix();
+    translate(x, y);
+    scale(Size / 650);
+    translate(-350, -350);
+    for (var Size1 = 0; Size1 < 40; Size1++) {
+        strokeWeight(Size1);
+        stroke(255, 0, 0, 5);
+        line(35, 659, 236, 435);
+        line(576, 55, 436, 215);
+    }
+    strokeWeight(3);
+    stroke(255);
+    line(35, 659, 576, 55);
+    stroke(100);
+    strokeWeight(9);
+    line(241, 433, 345, 317);
+    stroke(150);
+    strokeWeight(5);
+    line(241, 433, 345, 317);
+    noStroke();
+    pushMatrix();
+    translate(200, 0);
+    pushMatrix();
+    translate(0, 50);
+    //Neck
+    fill(27, 27, 31);
+    quad(157, 72, 160, 90, 188, 87, 188, 70);
+    //Arms
+    fill(27, 27, 31);
+    quad(241, 99, 302, 216, 264, 232, 206, 144);
+    beginShape();
+    vertex(141, 83);
+    vertex(106, 120);
+    vertex(106, 202);
+    vertex(94, 252);
+    vertex(120, 256);
+    vertex(158, 167);
+    endShape();
+    //Chest
+    fill(32, 32, 38);
+    beginShape();
+    vertex(139, 229);
+    vertex(137, 204);
+    vertex(134, 185);
+    vertex(127, 171);
+    vertex(121, 131);
+    vertex(126, 98);
+    vertex(139, 81);
+    vertex(177, 80);
+    vertex(205, 81);
+    vertex(229, 92);
+    vertex(241, 98);
+    vertex(240, 101);
+    vertex(232, 115);
+    vertex(224, 148);
+    vertex(224, 195);
+    vertex(230, 219);
+    endShape();
+    //Boots
+    fill(20);
+    beginShape();
+    vertex(120, 503);
+    vertex(123, 554);
+    vertex(119, 559);
+    vertex(114, 564);
+    vertex(104, 571);
+    vertex(103, 577);
+    vertex(108, 582);
+    vertex(156, 581);
+    vertex(161, 497);
+    endShape();
+    beginShape();
+    vertex(207, 515);
+    vertex(198, 610);
+    vertex(197, 614);
+    vertex(189, 618);
+    vertex(186, 622);
+    vertex(186, 630);
+    vertex(186, 634);
+    vertex(230, 635);
+    vertex(249, 504);
+    endShape();
+    //Legs
+    fill(30, 30, 36);
+    beginShape();
+    vertex(124, 440);
+    vertex(116, 506);
+    vertex(120, 508);
+    vertex(141, 509);
+    vertex(157, 504);
+    vertex(166, 495);
+    vertex(157, 439);
+    endShape();
+    beginShape();
+    vertex(212, 444);
+    vertex(200, 511);
+    vertex(208, 516);
+    vertex(217, 517);
+    vertex(230, 514);
+    vertex(237, 510);
+    vertex(252, 502);
+    vertex(253, 441);
+    endShape();
+    fill(25, 25, 38);
+    beginShape();
+    vertex(149, 84);
+    vertex(153, 104);
+    vertex(154, 133);
+    vertex(158, 167);
+    vertex(164, 196);
+    vertex(178, 233);
+    vertex(194, 231);
+    vertex(188, 185);
+    vertex(185, 143);
+    vertex(193, 84);
+    endShape();
+    //Waist
+    fill(26, 25, 36);
+    beginShape();
+    vertex(139, 277);
+    vertex(141, 264);
+    vertex(142, 240);
+    vertex(138, 225);
+    vertex(231, 216);
+    vertex(230, 226);
+    vertex(229, 234);
+    vertex(229, 245);
+    vertex(230, 259);
+    vertex(236, 276);
+    endShape();
+    stroke(0, 0, 0);
+    strokeWeight(2);
+    line(143, 266, 228, 261);
+    line(227, 246, 144, 251);
+    line(143, 240, 223, 233);
+    noStroke();
+    //Robe
+    fill(18, 15, 24);
+    quad(138, 276, 112, 450, 261, 444, 233, 270);
+    fill(26, 25, 32);
+    beginShape();
+    vertex(139, 276);
+    vertex(233, 272);
+    vertex(279, 375);
+    vertex(270, 390);
+    vertex(258, 401);
+    vertex(240, 411);
+    vertex(229, 416);
+    vertex(181, 423);
+    vertex(138, 424);
+    vertex(101, 420);
+    endShape();
+    fill(31, 31, 41);
+    beginShape();
+    vertex(161, 275);
+    vertex(200, 275);
+    vertex(215, 434);
+    vertex(212, 446);
+    vertex(197, 458);
+    vertex(173, 466);
+    vertex(156, 468);
+    vertex(129, 462);
+    vertex(118, 455);
+    quad(258, 232, 304, 211, 327, 285, 301, 295);
+    quad(94, 237, 126, 247, 110, 294, 91, 292);
+    fill(24, 24, 31);
+    beginShape();
+    vertex(90, 292);
+    vertex(86, 316);
+    vertex(85, 323);
+    vertex(89, 333);
+    vertex(104, 336);
+    vertex(109, 333);
+    vertex(111, 284);
+    endShape();
+    beginShape();
+    vertex(302, 293);
+    vertex(305, 315);
+    vertex(305, 323);
+    vertex(305, 327);
+    vertex(306, 336);
+    vertex(310, 338);
+    vertex(313, 333);
+    vertex(314, 324);
+    vertex(315, 343);
+    vertex(318, 343);
+    vertex(320, 336);
+    vertex(321, 329);
+    vertex(323, 335);
+    vertex(324, 342);
+    vertex(329, 343);
+    vertex(331, 330);
+    vertex(336, 337);
+    vertex(338, 341);
+    vertex(342, 335);
+    vertex(339, 325);
+    vertex(325, 279);
+    endShape();
+    endShape();
+    popMatrix();
+    fill(203, 168, 113);
+    triangle(164, 39, 167, 18, 174, 34);
+    triangle(196, 43, 209, 31, 198, 53);
+    triangle(200, 55, 212, 52, 199, 63);
+    triangle(198, 71, 211, 78, 197, 88);
+    triangle(141, 75, 132, 86, 148, 97);
+    triangle(142, 44, 127, 38, 138, 53);
+    triangle(138, 51, 126, 63, 139, 65);
+    fill(160, 29, 0);
+    pushMatrix();
+    translate(3, 0);
+    beginShape();
+    vertex(149, 32);
+    vertex(186, 33);
+    vertex(193, 36);
+    vertex(199, 47);
+    vertex(199, 62);
+    vertex(199, 80);
+    vertex(196, 91);
+    vertex(190, 114);
+    vertex(186, 123);
+    vertex(158, 123);
+    vertex(150, 120);
+    vertex(139, 99);
+    vertex(135, 83);
+    vertex(132, 58);
+    vertex(132, 44);
+    vertex(136, 38);
+    endShape();
+    fill(133, 22, 0);
+    triangle(169, 86, 161, 98, 177, 100);
+    popMatrix();
+    fill(30);
+    triangle(159, 33, 164, 57, 171, 32);
+    quad(202, 52, 196, 58, 198, 64, 203, 68);
+    quad(136, 57, 142, 61, 142, 66, 137, 72);
+    ellipse(156, 73, 17, 11);
+    ellipse(181, 73, 17, 11);
+    triangle(140, 94, 165, 122, 153, 123);
+    triangle(181, 123, 197, 100, 191, 122);
+    quad(158, 110, 166, 104, 179, 111, 167, 109);
+    fill(255);
+    ellipse(156, 73, 12, 6);
+    ellipse(181, 73, 12, 6);
+    fill(155, 147, 124);
+    ellipse(156, 73, 7, 7);
+    ellipse(181, 73, 7, 7);
+    popMatrix();
+    popMatrix();
+},
+kyloren: function(x, y, Size) {
+    pushMatrix();
+    translate(x, y);
+    scale(Size / 500);
+    translate(-200, -300);
+    //Thing
+    stroke(40);
+    strokeWeight(3);
+    line(251, 205, 245, 328);
+    noStroke();
+    //Lightsaber
+    pushMatrix();
+    scale(0.5);
+    translate(40, 320);
+    rotate(-20);
+    for (var Size = 0; Size < 400; Size += 6) {
+        fill(200, 0, 0, 3);
+        ellipse(100, -100, Size / 3, Size * 1.5);
+    }
+    fill(204, 30, 68);
+    arc(80, 112.5, 100, 10, 90, 270);
+    arc(140, 112.5, 100, 10, -90, 90);
+    arc(110, 112.5, 20, 1000, 180, 360);
+    for (var Size = 0; Size < 10; Size += 1) {
+        fill(255, 255, 255, 11);
+        arc(80, 112.5, 100 - Size, Size, 90, 270);
+        arc(140, 112.5, 100 - Size, Size, -90, 90);
+        arc(110, 112.5, Size * 2, 1000 - Size * 5, 180, 360);
+    }
+    fill(85, 92, 97);
+    rect(80, 105, 60, 15, 5);
+    fill(43, 47, 49);
+    rect(80, 112.5, 60, 7.5, 5);
+    rectMode(CENTER);
+    for (var Size = 0; Size < 15; Size += 1) {
+        fill(255, 255, 255, 7);
+        rect(110, 112.5, 60, Size, 5);
+    }
+    rectMode(BASELINE);
+    fill(27, 29, 30);
+    rect(100, 100, 20, 100, 5);
+    rect(97.5, 160, 25, 40, 5);
+    rectMode(CENTER);
+    for (var Size = 0; Size < 23; Size += 1) {
+        fill(255, 255, 255, 1.5);
+        rect(110, 150, Size, 100, 5);
+    }
+    rectMode(BASELINE);
+    popMatrix();
+    //Arm
+    fill(20);
+    beginShape();
+    vertex(156, 167);
+    vertex(128, 194);
+    vertex(97, 203);
+    vertex(102, 223);
+    vertex(147, 215);
+    vertex(163, 300);
+    endShape();
+    //Hand
+    quad(102, 224, 95, 225, 97, 235, 101, 237);
+    //Waist
+    fill(35);
+    quad(244, 281, 242, 153, 156, 155, 144, 280);
+    //Back of Cloak
+    fill(26);
+    beginShape();
+    vertex(84, 468);
+    vertex(137, 475);
+    vertex(222, 498);
+    vertex(275, 529);
+    vertex(208, 297);
+    vertex(141, 297);
+    endShape();
+    beginShape();
+    vertex(282, 551);
+    vertex(291, 568);
+    vertex(298, 573);
+    vertex(306, 573);
+    vertex(313, 568);
+    vertex(319, 539);
+    endShape();
+    quad(87, 465, 88, 523, 116, 520, 125, 463);
+    beginShape();
+    vertex(88, 522);
+    vertex(73, 551);
+    vertex(76, 557);
+    vertex(82, 560);
+    vertex(93, 561);
+    vertex(96, 561);
+    vertex(116, 519);
+    endShape();
+    //Cloak
+    fill(39);
+    beginShape();
+    vertex(172, 305);
+    vertex(243, 304);
+    vertex(289, 429);
+    vertex(307, 451);
+    vertex(360, 507);
+    vertex(377, 519);
+    vertex(284, 557);
+    vertex(228, 449);
+    vertex(209, 416);
+    endShape();
+    beginShape();
+    vertex(144, 285);
+    vertex(140, 303);
+    vertex(110, 353);
+    vertex(66, 438);
+    vertex(57, 466);
+    vertex(57, 491);
+    vertex(61, 532);
+    vertex(73, 556);
+    vertex(83, 489);
+    vertex(93, 456);
+    vertex(118, 410);
+    vertex(128, 382);
+    vertex(151, 329);
+    vertex(157, 307);
+    vertex(150, 292);
+    endShape();
+    fill(44);
+    beginShape();
+    vertex(188, 314);
+    vertex(198, 335);
+    vertex(211, 369);
+    vertex(221, 396);
+    vertex(231, 429);
+    vertex(252, 465);
+    vertex(271, 481);
+    vertex(266, 469);
+    vertex(250, 443);
+    vertex(238, 399);
+    vertex(218, 347);
+    vertex(200, 315);
+    endShape();
+    beginShape();
+    vertex(253, 387);
+    vertex(263, 413);
+    vertex(272, 457);
+    vertex(283, 474);
+    vertex(300, 487);
+    vertex(325, 489);
+    vertex(296, 466);
+    vertex(282, 447);
+    vertex(270, 395);
+    endShape();
+    //Waist
+    fill(32);
+    rect(144, 277, 100, 30);
+    //Arm
+    fill(27);
+    beginShape();
+    vertex(192, 160);
+    vertex(167, 212);
+    vertex(99, 221);
+    vertex(99, 237);
+    vertex(177, 240);
+    vertex(247, 164);
+    endShape();
+    //Head
+    fill(15);
+    beginShape();
+    vertex(149, 83);
+    vertex(150, 103);
+    vertex(153, 112);
+    vertex(172, 149);
+    vertex(229, 126);
+    vertex(206, 65);
+    endShape();
+    fill(106);
+    beginShape();
+    vertex(156, 85);
+    vertex(168, 113);
+    vertex(184, 132);
+    vertex(198, 137);
+    vertex(226, 129);
+    vertex(210, 69);
+    vertex(168, 73);
+    endShape();
+    stroke(50);
+    strokeWeight(2);
+    line(161, 96, 178, 89);
+    line(178, 89, 185, 87);
+    line(185, 87, 214, 92);
+    line(160, 90, 178, 83);
+    line(178, 83, 185, 81);
+    line(185, 81, 214, 86);
+    noStroke();
+    fill(30);
+    ellipse(168, 103, 13, 7);
+    ellipse(186, 100, 13, 7);
+    fill(30);
+    beginShape();
+    curveVertex(231, 123);
+    curveVertex(231, 123);
+    curveVertex(226, 83);
+    curveVertex(216, 59);
+    curveVertex(199, 44);
+    curveVertex(172, 47);
+    curveVertex(162, 53);
+    curveVertex(148, 88);
+    curveVertex(169, 79);
+    curveVertex(202, 82);
+    curveVertex(223, 122);
+    curveVertex(223, 122);
+    endShape();
+    fill(60);
+    quad(175, 110, 202, 132, 182, 137, 170, 117);
+    fill(52);
+    quad(175, 110, 185, 112, 206, 127, 202, 132);
+    noStroke();
+    //Head thingy
+    fill(30);
+    beginShape();
+    vertex(157, 155);
+    vertex(246, 156);
+    vertex(239, 118);
+    vertex(204, 129);
+    vertex(184, 138);
+    vertex(162, 144);
+    endShape();
+    //Cloak
+    fill(40);
+    beginShape();
+    curveVertex(241, 203);
+    curveVertex(241, 203);
+    curveVertex(247, 207);
+    curveVertex(254, 206);
+    curveVertex(247, 166);
+    curveVertex(247, 155);
+    curveVertex(236, 143);
+    curveVertex(201, 140);
+    curveVertex(170, 146);
+    curveVertex(158, 151);
+    curveVertex(153, 161);
+    curveVertex(150, 174);
+    curveVertex(168, 168);
+    curveVertex(209, 165);
+    curveVertex(223, 169);
+    curveVertex(223, 169);
+    endShape();
+    popMatrix();
+},
+BB8: function(x, y, Size) {
+    pushMatrix();
+    translate(x, y);
+    scale(Size / 300);
+    translate(-200, -205);
+    //Body
+    noStroke();
+    fill(180);
+    ellipse(200, 250, 200, 200);
+    fill(173);
+    arc(200, 250, 200, 200, 150, 300);
+    for (var Size = 0; Size < 200; Size += 15) {
+        fill(255, 255, 255, 20);
+        ellipse(200, 250, Size, Size);
+    }
+    stroke(227, 113, 7);
+    fill(220);
+    strokeWeight(15);
+    ellipse(190, 210, 90, 90);
+    arc(290, 240, 30, 80, 100, 238);
+    pushMatrix();
+    translate(229, 329);
+    rotate(-20);
+    arc(0, 0, 90, 40, 190, 350);
+    popMatrix();
+    pushMatrix();
+    translate(116, 259);
+    rotate(83);
+    arc(0, 0, 90, 20, 190, 350);
+    popMatrix();
+    noStroke();
+    fill(200);
+    ellipse(190, 210, 50, 50);
+    fill(180);
+    arc(190, 210, 50, 50, 140, 300);
+    pushMatrix();
+    translate(116, 260);
+    rotate(-5);
+    arc(0, 0, 30, 60, 90, 270);
+    ellipse(0, 0, 10, 60);
+    popMatrix();
+    pushMatrix();
+    translate(289, 243);
+    rotate(-2);
+    arc(0, 0, 20, 60, 270, 450);
+    ellipse(0, 0, 12, 50);
+    popMatrix();
+    pushMatrix();
+    translate(230, 322);
+    rotate(-108);
+    arc(0, 0, 36, 64, 90, 270);
+    ellipse(0, 0, 12, 50);
+    popMatrix();
+    fill(227, 113, 7);
+    quad(158, 188, 172, 195, 171, 201, 153, 200);
+    quad(206, 175, 195, 189, 200, 194, 217, 183);
+    quad(170, 245, 179, 224, 185, 226, 187, 250);
+    quad(220, 240, 204, 223, 210, 216, 230, 219);
+    quad(113, 224, 106, 235, 110, 241, 118, 237);
+    quad(124, 282, 115, 281, 115, 288, 125, 295);
+    quad(285, 214, 291, 219, 289, 227, 282, 226);
+    quad(282, 260, 290, 255, 294, 259, 289, 271);
+    quad(245, 312, 248, 322, 255, 324, 259, 310);
+    quad(200, 330, 211, 337, 217, 334, 212, 319);
+    //Head
+    noStroke();
+    strokeWeight(2);
+    stroke(255);
+    line(205, 55, 205, 100);
+    line(220, 30, 220, 100);
+    strokeWeight(4);
+    stroke(0);
+    line(220, 30, 220, 35);
+    strokeWeight(5);
+    line(220, 100, 220, 75);
+    noStroke();
+    fill(230);
+    arc(200, 151, 140, 40, 0, 180);
+    fill(225);
+    arc(200, 151, 140, 150, 180, 360);
+    for (var Size = 0; Size < 150; Size += 15) {
+        fill(0, 0, 0, 6);
+        arc(200, 151, 140, Size, 180, 360);
+    }
+    fill(210);
+    arc(200, 88, 70, 20, 180, 360);
+    ellipse(200, 88, 60, 26);
+    for (var Size = 0; Size < 60; Size += 7) {
+        fill(100, 100, 100, 11);
+        ellipse(200, 88, Size, Size / 2);
+    }
+    noFill();
+    stroke(150);
+    strokeWeight(10);
+    arc(200, 90, 65, 10, 0, 180);
+    strokeWeight(1.5);
+    stroke(110);
+    line(174, 89, 163, 92);
+    line(183, 91, 176, 97);
+    line(195, 91, 192, 99);
+    line(207, 91, 210, 99);
+    line(219, 91, 224, 98);
+    line(229, 88, 237, 92);
+    stroke(227, 113, 7);
+    strokeWeight(6);
+    arc(180, 100, 55, 23, 80, 180);
+    arc(220.5, 100, 55, 23, 0, 100);
+    strokeWeight(10);
+    arc(200, 139, 133, 33, 10, 170);
+    strokeWeight(8);
+    stroke(100);
+    arc(200, 146, 136, 36, 10, 170);
+    strokeWeight(5);
+    stroke(140);
+    arc(200, 146, 136, 36, 10, 170);
+    noStroke();
+    strokeWeight(1.5);
+    stroke(160);
+    rect(161, 132, 50, 10, 2);
+    noFill();
+    noStroke();
+    fill(215);
+    ellipse(200, 120, 35, 35);
+    rect(182.5, 120, 35, 30);
+    fill(70);
+    ellipse(200, 120, 27, 27);
+    fill(20);
+    ellipse(200, 120, 20, 20);
+    for (var Size = 0; Size < 12; Size++) {
+        fill(200, 0, 0, 70);
+        ellipse(199, 122, Size, Size);
+    }
+    stroke(50);
+    strokeWeight(2);
+    noFill();
+    ellipse(230, 135, 18, 18);
+    noStroke();
+    fill(50);
+    ellipse(230, 135, 11, 11);
+    fill(20);
+    ellipse(231, 135, 5, 5);
+    popMatrix();
+},
+lock: function(x,y,size){
+    fill(0,0,0,50);
+    rect(x-60,y-90,130,180,10);
+    fill(102, 102, 102);
+    rect(x-size*1.8/10,y-size*0.1,size*3.9/10,size*3.5/10,5);    
+    noFill();
+    strokeWeight(size/20);
+    stroke(102);
+    arc(x+size*0.01,y-size*0.5/10,size*3/10,size*4/10,180,360);
+    noStroke();
+    fill(0);
+    ellipse(x+size*1/100,y+size*1/100,size/10,size/10);
+    rect(x+size*-0.7/100,y,size*4/100,size/6,5);    
+},
+};
+
+//The Star Background
+var stars=[];
+for (var i=0;i<200;i+=1){
+stars.push(random(0,600),random(0,400),random(1,4));    
+}
+
+
+//If a certain condition is true, fill color C1, else fill color C2.
+var conditional = function(condition,C1,C2){
+    if (condition){
+        fill(C1);
+        cursor("POINTER");
+    }else{
+        fill(C2);
+    }
+};
+
+//If you click, return true
+var clickedAt = function(Xpos,YPos,XSize,YSize){
+    if (mouseX>Xpos&&mouseX<Xpos+XSize&&mouseY>YPos&&mouseY<YPos+YSize&&mouseIsPressed){
+        return true;    
+    }
+};
+
+//Displays messages.
+var message = function(){
+    this.messages = ["Welcome To\nStar Wars: Galaxy Of Heroes!","You are a young commander in the Republic Army during the Clone Wars. You have to try to make the perfect team to defeat the evil Sith and save the Republic from certain doom.","You start off with 20,000 credits and 300 gems to aid you in your battles. With this money, you can buy Battle Droids to train your characters, enter Contests, and more!    ","You can earn more money by entering battles. You will face up to 5 opponents, and can fight them using your team. If you win, then you win more Battle Droids, Credits, Gems, and even more characters! However, if you lose, 10,000 credits will be taken away!","If you lose more than 3 battles in a row, you will lose 100 gems. If you ever find that a battle is too hard, you can claim the Free Prizes in the Acheivements section to help you.","To get back to the Main Menu at any time, press the down arrow key.","Good Luck! If you need to see these instructions again, you can read them at the top of this program."];
+    this.selected = 0;
+    this.clickBuffer = 50;
+};
+message.prototype.display = function(){
+    if (this.selected < 6){
+    noStroke();
+    fill(50);
+    rect(0,250,600,150);
+    if (this.selected===0){
+        textSize(30);
+    }else{
+        textSize(18);
+    }
+    fill(100);
+    textAlign(CENTER,CENTER);
+    text(this.messages[this.selected],140,225,420,200);
+    graphics.BB8(70,320,150);
+    }
+};
+message.prototype.update = function(){
+    if (this.clickBuffer<0&&mouseIsPressed){
+        this.clickBuffer = 40;
+        this.selected++;
+    }
+    this.clickBuffer--;
+};
+
+//The inbox for all of the acheivements
+var inbox = function(){
+    this.messageTitles = ["Free Prize","Join SW: GOH!"];
+    this.messages = ["You get a free prize!","You get 20,000 credits, 300 gems, and 1 character to get you ready to play Star Wars: Galaxy Of Heroes!"];
+    this.selected = 0;
+    this.timer = 0;
+    this.offset = 0;
+    this.Scroll = false;
+};
+inbox.prototype.display = function(){
+    background(50);
+    noStroke();
+    fill(45);
+    rect(0,0,250,400);
+    textAlign(CENTER,CENTER);
+    //The word acheivements
+    pushMatrix();
+    translate(0,-this.offset+50);
+    textSize(25);
+    fill(255, 111, 0);
+    text("Acheivements",130,-25);
+    popMatrix();
+    textSize(30);
+    text("Information",430,30);
+
+    for (var i = 0; i < this.messageTitles.length; i++){
+        //Implements the scroll bar
+        pushMatrix();
+        translate(0,-this.offset+50);
+        stroke(70);
+        strokeWeight(2);
+        
+        //If you click on an acheivement, you can view it
+        if (mouseX<250&&mouseY+this.offset-50>i*50&&mouseY+this.offset-50<(i+1)*50&&mouseIsPressed){
+            this.selected = i;
+        }
+        
+        //if you are over the button, change the color
+        conditional(mouseX<250&&mouseY+this.offset-50>i*50&&mouseY+this.offset-50<(i+1)*50,color(100),color(60));
+        
+        //Draws the buttons
+        rect(0,i*50,250,50);
+        
+        //Shows the acheivement text
+        textAlign(CENTER,CENTER);
+        textSize(20);
+        fill(90);
+        text(this.messageTitles[i],125,i*50+25);
+        popMatrix();
+        
+        //The acheivement description
+        textSize(20);
+        textAlign(BASELINE,BASELINE);
+        text(this.messages[this.selected],275,65,300,600);
+        
+        //Draws the Claim button
+        conditional(mouseX>350&&mouseY>220&&mouseX<500&&mouseY<270,color(100),color(60));
+        rect(350,220,150,50);
+        
+        conditional(mouseX>350&&mouseY>220&&mouseX<500&&mouseY<270,color(70),color(100));
+        textSize(30);
+        text("CLAIM",379,255);
+        stroke(30);
+        fill(40);
+        rect(290,300,75,75);
+        rect(393,300,75,75);
+        rect(496,300,75,75);
+    }
+    
+    //Draws the Scroll bar
+    noStroke();
+    fill(0,0,0,40);
+    rect(250,0,15,400);
+    fill(0,0,0,this.Scroll ? 200 : 100);
+    rect(250,map(this.offset,0,this.messageTitles.length*50,0,200),15,200);
+    
+    if (this.messages.length === 0){
+        fill(70);
+        textSize(20);
+        text("You currently don't have any acheivements to claim - try completing some battles or upgrading your characters!",5,30,250,200);
+    }
+};
+inbox.prototype.claim = function(){
+    //Lets you claim items
+        if (mouseX>340&&mouseY>220&&mouseX<490&&mouseY<270&&mouseIsPressed&&this.timer<0){
+        this.messages.splice(this.selected,1);
+        this.messageTitles.splice(this.selected,1);
+        this.timer=20;
+    }
+    this.timer--;    
+};
+inbox.prototype.scroll = function(){
+    //Lets you scroll through things
+    if (mouseX>250&&mouseX<265&&mouseY>map(this.offset,0,this.messageTitles.length*50,0,200)&&mouseY<map(this.offset,0,this.messageTitles.length*50,0,200)+200&&mouseIsPressed){
+        this.Scroll = true;
+    }
+    
+    //Turns scroll off
+    if (!mouseIsPressed||mouseX<200||mouseX>305){
+        this.Scroll = false;
+    }
+    
+    //Sets the offset according to your mouse
+    if (this.Scroll){
+        this.offset += map(mouseY-pmouseY,0,200,0,this.messageTitles.length*50);
+    }
+    this.offset = constrain(this.offset,0,this.messageTitles.length*50);
+};
+
+//The character select page - will work on after basic mechanics are done
+var character = function(){
+    this.Name = ["Luke Skywalker","Jawa","Unknown Jedi","Chewbacca","Clone Trooper","BB-8 Droid"];
+    this.XP = [100,100];
+    this.level = [1,1,1,1,1,1];
+    this.quotes = ["I'll not leave you here. I've got to save you.","Mob un loo?","May the Force be with you.","WAGRRRRWWGAHHHHWWWRRGGAWWWWWWRR.","Run!","Beeeeeep-beep-beeeep!"];
+    this.damage = [0,0,0,0,0,0];
+    this.health = [0,0,0,0,0,0];
+    this.unlocked = [true,false,false,false,false,false];
+    
+    this.selected = 0;
+    this.page = 0;
+    this.clickBuffer = 50;
+    this.view  = 0;
+    this.scrolling = false;
+    this.scrollAmount = 0;
+};
+character.prototype.display = function(){
+    //Basic Setup
+    background(40);
+    noStroke();
+    fill(45);
+    rect(350,0,250,400);
+    pushMatrix();
+    translate(0,-this.scrollAmount);
+    for (var x = 20; x < 300; x += 150){
+        for (var y = 20; y < 600; y += 200){
+            conditional(mouseX > x && mouseX < x+130 && mouseY > y-this.scrollAmount && mouseY < y-this.scrollAmount+180,color(80),color(60));
+            rect(x,y,130,180,10);
+        }
+    }
+    graphics.luke(75,110,170);
+    graphics.jawa(230,110,130);
+    graphics.jedi(70,310,170);
+    graphics.chewbacca(230,310,160);
+    graphics.clone(80,510,140);
+    graphics.BB8(230,510,140);
+    
+    if (!this.unlocked[0]){graphics.lock(80,110,200);}
+    if (!this.unlocked[1]){graphics.lock(230,110,200);}
+    if (!this.unlocked[2]){graphics.lock(80,310,200);}
+    if (!this.unlocked[3]){graphics.lock(230,310,200);}
+    if (!this.unlocked[4]){graphics.lock(80,510,200);}
+    if (!this.unlocked[5]){graphics.lock(230,510,200);}
+    
+    strokeWeight(1);
+    noStroke();
+    if (clickedAt(20,20-this.scrollAmount,130,180)&&this.unlocked[0]){this.selected = 0;}
+    if (clickedAt(170,20-this.scrollAmount,130,180)&&this.unlocked[1]){this.selected = 1;}
+    if (clickedAt(20,220-this.scrollAmount,130,180)&&this.unlocked[2]){this.selected = 2;}
+    if (clickedAt(170,220-this.scrollAmount,130,180)&&this.unlocked[3]){this.selected = 3;}
+    if (clickedAt(20,420-this.scrollAmount,130,180)&&this.unlocked[4]){this.selected = 4;}
+    if (clickedAt(170,420-this.scrollAmount,130,180)&&this.unlocked[5]){this.selected = 5;}
+    noStroke();
+    popMatrix();
+    fill(0,0,0,30);
+    rect(330,0,20,400);
+    fill(0,0,0,80);
+    rect(330,map(this.scrollAmount,0,230,0,100),20,300);
+    if (mouseX > 330 && mouseX < 350 && mouseY > map(this.scrollAmount,0,230,0,100) && mouseY < map(this.scrollAmount,0,230,0,100) + 300&&mouseIsPressed){
+        this.scrolling = true;
+    }
+    if (mouseX < 200 || mouseX > 400 || !mouseIsPressed){
+        this.scrolling = false;
+    }
+    if (this.scrolling){
+        this.scrollAmount += map(mouseY-pmouseY,0,100,0,230);
+    }
+    this.scrollAmount = constrain(this.scrollAmount,0,280);
+    if (this.page === 0){
+        fill(50);
+        rect(350,240,250,160);
+        for (var Size = 0; Size < 50; Size +=2){
+            fill(20,20,20,5);
+            rect(350,240,250,Size);
+        }
+        //Character Overview
+        fill(100);
+        textAlign(CENTER,CENTER);
+        textSize(22);
+        text(this.Name[this.selected],475,260);
+        noFill();
+        stroke(70);
+        rect(360,285,230,25);
+        noStroke();
+        fill(94, 94, 94);
+        rect(360,285,map((this.XP[this.selected]+this.XP[this.selected+1])/2,0,1000,0,230),25);
+        textSize(17);
+        if ((this.XP[this.selected]+this.XP[this.selected+1])/2>620){
+            fill(50);
+        }else{
+            conditional((this.XP[this.selected]+this.XP[this.selected+1])/2>380,color(20),color(110));
+        }
+        text("Level "+this.level[this.selected],475,297);
+        fill(80);
+        text(this.quotes[this.selected],360,300,230,100);
+        if (this.Name[this.selected] === "Luke Skywalker"){
+            graphics.luke(480,130,200);
+        }
+        if (this.Name[this.selected] === "Jawa"){
+            graphics.jawa(480,140,150);
+        }
+        if (this.Name[this.selected] === "Unknown Jedi"){
+            graphics.jedi(480,135,200);
+        }
+        if (this.Name[this.selected] === "Chewbacca"){
+            graphics.chewbacca(480,130,180);
+            noStroke();
+        }
+        if (this.Name[this.selected] === "Clone Trooper"){
+            graphics.clone(480,130,200);
+        }
+    }else{
+        graphics.battleDroid(440,350,200);
+        textSize(30);
+        fill(90);
+        text("X "+playerStats[2],515,355);
+        conditional(mouseX>400&&mouseX<550&&mouseY>50&&mouseY<110,color(70),color(55));
+        rect(400,50,150,60,10);
+        conditional(mouseX>400&&mouseX<550&&mouseY>195&&mouseY<255,color(70),color(55));        
+        rect(400,195,150,60,10);
+        fill(100);
+        textSize(20);
+        text("Upgrade\nAttack",475,80);
+        text("Upgrade\nDefense",475,225);
+        text("Deals "+this.damage[this.selected]+" damage",475,170);
+        text("Has "+this.health[this.selected]+" health",475,310);
+        noFill();
+        stroke(70);
+        rect(360,125,230,25);
+        rect(360,270,230,25);
+        noStroke();
+        fill(94, 94, 94);
+        rect(360,125,map(this.XP[this.selected],0,1000,0,230),25);
+        rect(360,270,map(this.XP[this.selected+1],0,1000,0,230),25);
+        if (clickedAt(400,50,150,60)&&this.clickBuffer<0){
+            if (playerStats[2]>0){
+                playerStats[2]--;
+                this.XP[this.selected]+=100;
+                this.clickBuffer=20;
+            }else{
+                this.view = 1;
+            }
+        }
+        if (clickedAt(400,195,150,60)&&this.clickBuffer<0){
+            if (playerStats[2]>0){
+                playerStats[2]--;
+                this.XP[this.selected+1]+=100;
+                this.clickBuffer=20;
+            }else{
+                this.view = 1;
+            }
+        }
+    }
+    //The tabs at the top
+    conditional(this.page === 0, color(45), color(0,0,0,30));
+    rect(350,0,125,25);
+    conditional(this.page === 1, color(45), color(0,0,0,30));
+    rect(475,0,125,25);    
+    fill(100);
+    textSize(20);
+    text("Overview",410,12);
+    text("Upgrade",535,12);
+    if (this.view === 1){
+            fill(25);
+            rect(140,75,325,250);
+            fill(70);
+            textSize(20);
+            
+            text("Sorry, but you do not have\nenough Battle Droids to upgrade\nthis character. You can\nearn more in the store or by\nwinning a battle.\n\nClick to dismiss this message.",300,200);
+            if (this.clickBuffer<-100&&mouseIsPressed){
+                this.clickBuffer = 2;
+                this.view = 0;
+            }
+        }
+        cursor("DEFAULT");
+};
+character.prototype.upgradeLevels = function(){
+    this.damage[this.selected] = ((this.level[this.selected]*1000)+this.XP[this.selected])/100;
+    this.health[this.selected] = ((this.level[this.selected]*1000)+this.XP[this.selected])/10;
+    if (clickedAt(350,0,125,25)){
+        this.page = 0;
+    }
+    if (clickedAt(475,0,125,25)){
+        this.page = 1;  
+    }
+    if (this.XP[this.selected] >= 1000 && this.XP[this.selected+1] >= 1000){
+        this.XP[this.selected] = 0;
+        this.XP[this.selected+1] = 0;
+        this.level[this.selected] ++;
+    }
+    this.clickBuffer--;
+};
+
+//The home screen
+var home = function(){
+
+};
+home.prototype.display = function(){
+
+};
+home.prototype.select = function(){
+
+};
+
+//Store
+var store = function(){
+    this.offset = 0;
+    this.buyChoices = ["10,000 Credits","100 Gems","2 Battle Droids","1 Character"];
+    this.costChoices = ["100 gems","10,000 credits","20 gems","100,000 credits"];
+    this.cost = [1,100,0,10000,1,20,0,100000];
+    this.prize = [10000,100,1,1];
+    this.Scroll = false;
+    this.clickBuffer = 0;
+    this.view = 0;
+};
+store.prototype.display = function(){
+    background(40);
+    noStroke();
+    fill(47);
+    rect(0,0,600,60);
+    for (var Size = 0; Size < 30; Size+=2){
+        fill(0,0,0,5);
+        rect(0,60,600,Size);
+    }
+    fill(40);
+    rect(35,16,120,30,20);
+    rect(455,16,120,30,20);
+    fill(255,130,0);
+    textSize(15);
+    textAlign(BASELINE,BASELINE);
+    text(playerStats[0],70,35.5);
+    textAlign(RIGHT,BASELINE);
+    text(playerStats[1],550,35.5);
+    fill(100);
+    textAlign(CENTER,CENTER);
+    textSize(30);
+    text("The Store",300,30);
+    graphics.credit(40,25,50);
+    graphics.gem(570,22,30);
+    pushMatrix();
+    translate(-this.offset,0);
+    for (var i = 0; i < this.buyChoices.length; i++){
+        fill(30);
+        rect(20+i*230,100,200,200,5);
+        conditional(mouseX>50+i*230-this.offset&&mouseX<190+i*230-this.offset&&mouseY>310&&mouseY<360,color(50),color(30));
+        rect(50+i*230,310,140,50,5);
+        fill(120);
+        textSize(30);
+        text("Buy",117.5+i*230,335);
+        fill(150);
+        textSize(24);
+        text("-"+this.buyChoices[i]+"-",117.5+i*230,120);
+        textSize(15);
+        text("("+this.costChoices[i]+")",117.5+i*230,145);
+        if (clickedAt(50+i*230-this.offset,310,140,50)&&this.clickBuffer<0){
+            if (playerStats[this.cost[i*2]]-this.cost[i*2+1]>=0){
+                playerStats[i]+=this.prize[i];
+                playerStats[this.cost[i*2]]-=this.cost[i*2+1];
+                this.clickBuffer=50;
+            }else{
+                this.view = 1;
+            }
+        }
+        this.clickBuffer--;
+        graphics.credit(80,200,100);
+        graphics.credit(150,200,100);
+        graphics.credit(90,240,100);
+        graphics.credit(110,190,100);
+        graphics.credit(160,250,100);
+        
+        graphics.gem(300,200,50);
+        graphics.gem(400,200,50);
+        graphics.gem(350,220,50);
+        
+        graphics.battleDroid(600,200,200);
+        graphics.battleDroid(530,230,200);
+        graphics.battleDroid(620,250,200);
+        
+        graphics.cards(820,220,150);       
+        
+            //Draw message if there isn't enough money
+        if (this.view === 1){
+            fill(25);
+            rect(140,75,325,250);
+            fill(70);
+            textSize(20);
+            
+            text("Sorry, but you do not currently\ndo not possess the\nmaterials required to buy this.\nTry completing a battle to earn\nmore.\n\nClick to dismiss this message.",300,200);
+            if (this.clickBuffer<-100&&mouseIsPressed){
+                this.clickBuffer = 2;
+                this.view = 0;
+            }
+        }
+    }
+    popMatrix();
+    fill(0,0,0,40);
+    rect(0,385,600,15);
+    fill(0,0,0,this.Scroll ? 200 : 100);
+    rect(map(this.offset,0,this.buyChoices.length*230,0,300),385,500,15);
+};
+store.prototype.scroll = function(){
+        if (mouseX>map(this.offset,0,this.buyChoices.length*230,0,100)&&mouseX<map(this.offset,0,this.buyChoices.length*230,0,100)+500&&mouseY>385&&mouseIsPressed){
+            this.Scroll = true;    
+        }
+        if (!mouseIsPressed||mouseY<350){
+            this.Scroll = false;
+        }
+        if (this.Scroll){
+            this.offset += map(mouseX-pmouseX,0,600,0,this.buyChoices.length*230);
+        }
+        this.offset = constrain(this.offset, -10, this.buyChoices.length*230-500);
+};
+
+//The Logo
+var logo = function(){
+this.logoSize = 5000;
+this.timer = 0;
+};
+logo.prototype.update = function(){
+if (this.logoSize>0){this.logoSize-=10;}
+this.timer++;
+};
+logo.prototype.display = function(){
+background(0);
+noStroke();
+for (var i=0;i<stars.length;i+=3){
+fill(150,230,255);
+ellipse(stars[i],stars[i+1],stars[i+2],stars[i+2]);
+}
+if (this.logoSize>0){graphics.logo(300,200,this.logoSize);}
+};
+
+var battleScreen = function(){
+this.battleSelected = 0;
+this.battleTitle = ["An Ambush","A New Enemy","Save Naboo","A Regrouping","Facing the King","The Cloner's Son","The Captain","Darth Maul","A Strong Defence","Kylo Ren"];
+this.battleInfo = ["Fight your way through a battalion of Super Battle-Droids to try to win a jackpot of 50 gems!","You shall face your newest enemy on Tatooine. Beware of the Electro-Staffs!","A bunch of droidekas are waiting for you at Naboo. Can you defeat them?","A legion of droids awaits you. To attack would be deadly, to gain a win impossible.","You never knew that Jabba The Hutt would be so deadly before today.","Angered at your assault on his Majesty, Boba Fett is waiting to defeat you and shove you down the throat of a hungry Sarlaac.","Captain Phasma attacks your team. With an impossibly high attack yet a slow reload time, will she best you?","Darth Maul, one of the creepiest Star Wars characters, is coming for you. Can you survive?","Darth Maul was defeated! He retreated into his personal guards, a squad of the most elite droids ever.","Kylo Ren. The deadliest Star Wars character yet. With an amazing health and a quick turn reload, you just won't be able to defeat this villian."];
+this.Scroll = false;
+this.offset = 0;
+};
+battleScreen.prototype.display = function(){
+    background(35);
+    noStroke();
+    fill(40);
+    rect(300,0,300,400);
+    fill(40);
+    rect(0,0,600,85);
+    pushMatrix();
+    translate(-this.offset,0);
+    for (var i = 0; i < this.battleTitle.length; i ++){
+        conditional(mouseX>20+i*100-this.offset&&mouseX<110+i*100-this.offset&&mouseY>10&&mouseY<55,color(50),color(30));
+        rect(20+i*100,10,90,45,10);
+        fill(100);
+        textSize(20);
+        textAlign(CENTER,CENTER);
+        text("-[ "+(i+1)+" ]-",65+i*100,31);
+        if (clickedAt(20+i*100-this.offset,10,90,45)){
+            this.battleSelected = i;
+        }
+    }
+    popMatrix();
+    fill(100,100,100,20);
+    rect(0,70,600,15);
+    fill(100,100,100,this.Scroll ? 200 : 100);
+    rect(map(this.offset,0,this.battleTitle.length*50,0,400),70,200,15);
+    fill(100);
+    textSize(25);
+    textAlign(CENTER,CENTER);
+    text(this.battleTitle[this.battleSelected],450,120);
+    textSize(20);
+    text(this.battleInfo[this.battleSelected],305,90,290,200);
+    rect(375,270,150,70,10);
+};
+battleScreen.prototype.update = function(){
+    if (mouseX>map(this.offset,0,this.battleTitle.length*50,0,400)&&mouseX<map(this.offset,0,this.battleTitle.length*50,0,400)+200&&mouseY>70&&mouseY<85&&mouseIsPressed){
+        this.Scroll = true;    
+    }
+    if (!mouseIsPressed||mouseY<50||mouseY>100){
+        this.Scroll = false;
+    }
+    if (this.Scroll === true){
+        this.offset += map(mouseX-pmouseX,0,400,0,this.battleTitle.length*50);    
+    }
+    this.offset = constrain(this.offset,0,this.battleTitle.length*50);
+};
+
+var battle = function(){
+
+};
+battle.prototype.display = function(){
+
+};
+battle.prototype.fight = function(){
+
+};
+
+
+var Store = new store();
+var Characters = new character();
+var BattlePage = new battleScreen();
+var Acheivements = new inbox();
+var Instructions = new message();
+
+var page = "Logo";
+var button = function(x, y, Width, Height,Text){
+this.x = x;
+this.y = y;
+this.Width = Width;
+this.Height = Height;
+this.hover = 0;
+this.Text = Text;
+};
+button.prototype.display = function(){
+if (mouseX > this.x && mouseX < this.x + this.Width && mouseY > this.y && mouseY < this.y + this.Height){
+if (this.hover < 20){this.hover++;}
+}else{
+this.hover = 0;
+}
+stroke(40+this.hover);
+fill(50+this.hover);
+rect(this.x,this.y,this.Width+this.hover*2,this.Height,this.hover/2);
+fill(70+this.hover);
+textAlign(CENTER,CENTER);
+textSize(30);
+text(this.Text,this.x+this.Width/2,this.y+this.Height/2);
+if (mouseX > this.x && mouseX < this.x + this.Width && mouseY > this.y && mouseY < this.y + this.Height&&mouseIsPressed){
+page = this.Text;
+if (this.Text === "Instructions"){
+Instructions.selected = 0;  
+}
+}
+};
+
+var StoreB = new button(20,35,250,50,"Store");
+var charselectB = new button(20,105,250,50,"Characters");
+var battlesB = new button(20,175,250,50,"Battles");
+var acheivementsB = new button(20,245,250,50,"Acheivements");
+var howToB = new button(20,315,250,50,"Instructions");
+var Logo = new logo();
+
+var menu = function(){
+background(40);
+acheivementsB.display();
+StoreB.display();
+charselectB.display();
+battlesB.display();
+howToB.display();
+if (acheivementsB.hover > 0 || StoreB.hover > 0 || charselectB.hover > 0 || battlesB.hover > 0 || howToB.hover > 0){
+cursor("POINTER");    
+}
+};
+
+draw = function() {
+cursor("DEFAULT");
+if (page === "Menu"){
+menu();
+}
+if (page === "Store"){
+Store.display();
+Store.scroll();
+}
+if (page === "Characters"){
+Characters.display();  
+Characters.upgradeLevels();
+}
+if (page === "Battles"){
+BattlePage.display();
+BattlePage.update();
+}
+if (page === "Acheivements"){
+Acheivements.display();
+Acheivements.claim();
+Acheivements.scroll();
+}
+if (page === "Instructions"){
+menu();
+Instructions.display();
+Instructions.update();
+}
+if (page === "Logo"){
+Logo.display();
+Logo.update();
+if (Logo.logoSize < 1){page = "Menu";}
+}
+};
+keyPressed = function(){
+if (keyCode === DOWN){
+page = "Menu";    
+}
+};
+
+
