@@ -1,7 +1,7 @@
 var canAccess = false;
 
 var page = "menu";
-var buttons = [];
+var menuButtons = [];
 var keys = [];
 var clicked = false;
 
@@ -10,7 +10,7 @@ var graphics = {
         fill(Color);
         rect(x,y,Size,Size);
         for (var nSize = 0; nSize < Size; nSize += 3){
-            fill(0,0,0,10);
+            fill(0,0,0,4);
             if (Type === 1){
                 rect(x,y,nSize,Size);
             }
@@ -746,8 +746,10 @@ var board = [
 [3,3,8,8,1,1,1,1,1,1,1,1,1,1,1,1,1,8,8,1,3,3,1,3,3],
 [3,3,1,8,8,1,1,1,1,1,1,1,1,1,1,1,8,8,1,3,1,1,3,3,3],
 [3,3,1,1,8,8,8,1,1,8,8,8,8,8,8,8,8,1,3,1,3,1,3,3,3],
-[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
-[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+[3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+[3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+[3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+[3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
 ];
 var npcs = [
 
@@ -756,28 +758,6 @@ var preferences = [
 
 ];
 var boardTiles = ["grass","water","tree","sand","sanddune","path","chest","wall","campfire","mountain"];
-
-var pixelDisplay = function(x,y,Width,Height,Design,Colors){
-    //Translates the graphics to the correct place
-    noStroke();
-    pushMatrix();
-    translate(x,y);
-    //Goes through the entire array of pixels along with the array of colors
-    for (var y = 0; y < Design.length; y++){
-        for (var x = 0; x < Design[y].length; x++){
-            for (var i = 0; i < Colors.length; i++){
-                //Fills the rectangles according to which color is at the position that the array states
-                if (Design[y][x]-1 === i){
-                    fill(Colors[i]);
-                }else{
-                    noFill();
-                }
-                rect(x*Width/Design[y].length,y*Height/Design.length,Width/Design[y].length+1,Height/Design.length+1);
-            }
-        }
-    }
-    popMatrix();
-};
 
 var setEasyInterface = function(){
     keyPressed = function(){
@@ -791,7 +771,7 @@ var setEasyInterface = function(){
 };
 };
 
-var button = function(Text,x,y,Size,to){
+var menuButton = function(Text,x,y,Size,to){
     this.Text = Text;
     this.pos = new PVector(x,y);
     this.Size = Size;
@@ -799,7 +779,7 @@ var button = function(Text,x,y,Size,to){
     this.over = false;
     this.gradient = 255;
 };
-button.prototype.display = function(){
+menuButton.prototype.display = function(){
     textAlign(CENTER,CENTER);
     textFont(createFont("Impact"));
     textSize(this.Size/4);
@@ -819,7 +799,7 @@ button.prototype.display = function(){
         text(this.Text,this.pos.x - this.Size/20, this.pos.y - this.Size/20);
     }
 };
-button.prototype.update = function(){
+menuButton.prototype.update = function(){
     if (dist(this.pos.x,this.pos.y,mouseX,mouseY) < this.Size/2){
         this.over = true;
     }else{
@@ -837,10 +817,10 @@ button.prototype.update = function(){
         this.gradient = 255;
     }
 };
-var deployButtons = function(){
-    buttons.push(new button("Begin",250,300,100,"game"));
-    buttons.push(new button("About",180,400,100,"about"));
-    buttons.push(new button("Settings",320,400,100,"settings"));
+var deployMenuButtons = function(){
+    menuButtons.push(new menuButton("Begin",300,225,100,"game"));
+    menuButtons.push(new menuButton("About",210,325,100,"about"));
+    menuButtons.push(new menuButton("Settings",390,325,100,"settings"));
 };
 
 var character = function(){
@@ -878,6 +858,7 @@ var setGame = function(){
     if (preferences.length < 441){
         preferences.push(floor(random(1,5)));
     }
+    cursor("default");
 };
 
 var menu = function(){
@@ -886,15 +867,15 @@ var menu = function(){
         background(200,0,0);
         for (var Size = 0; Size < 500; Size += 7){
             fill(0,0,0,1);
-            rect(0,0,Size,500);
+            rect(0,0,Size,600);
             fill(31, 184, 0,5);
-            rect(0,0,500,Size);
+            rect(0,0,600,Size);
             fill(0, 64, 255,5);
-            rect(500,0,-Size,500);
+            rect(600,0,-Size,600);
         }
-        for (var Size = 0; Size < 500; Size += 20){
+        for (var Size = 0; Size < 400; Size += 20){
             fill(0,0,0,5);
-            rect(0,0,500,Size);
+            rect(0,0,600,Size);
         }
         textFont(createFont("Impact"));
         
@@ -902,17 +883,17 @@ var menu = function(){
         for (var Size = 70; Size < 80; Size ++){
             textSize(Size);
             fill(255,255,255,7);
-            text("The Wanderer",250,100);
+            text("The Wanderer",300,75);
         }
         textSize(70);
         fill(255);
-        text("The Wanderer",250,100);
+        text("The Wanderer",300,75);
         textSize(20);
-        text("An AlexT Production • 2016",250,150);
+        text("An AlexT Production • 2016",300,125);
         textFont(createFont("default"));
         for (var i = 0; i < 3; i ++){
-            buttons[i].display();
-            buttons[i].update();
+            menuButtons[i].display();
+            menuButtons[i].update();
         }
     };
 var settings = function(){
@@ -963,13 +944,15 @@ var game = function(){
     popMatrix();
     player.display();
     player.update();
+    fill(125);
+    rect(400,0,200,400);
 };
 var load = function(){
 
 };
 
 setEasyInterface();
-deployButtons();
+deployMenuButtons();
 
 draw = function() {
     if (canAccess){
@@ -979,6 +962,12 @@ draw = function() {
         }
         if (page === "game"){
             game();
+        }
+        if (page === "settings"){
+            settings();
+        }
+        if (page === "about"){
+            about();
         }
         if (page === "load"){
             load();
