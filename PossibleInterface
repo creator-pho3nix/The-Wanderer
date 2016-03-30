@@ -1,0 +1,405 @@
+var fireTypes = [
+"the fire is dead.",
+"the fire is smoldering.",
+"the fire is flickering.",
+"the fire is burning.",
+"the fire is roaring."
+];
+var roomTypes = [
+"the room is freezing.",
+"the room is cold.",
+"the room is mild.",
+"the room is warm.",
+"the room is hot.",
+];
+var fireInfo = [
+"the light from the fire spills from the windows, out into the dark.",
+];
+var builderInfo = [
+"a ragged stranger stumbles through the door and collapses in the corner.",
+"the stranger shivers and mumbles quietly. her words are unintelligible",
+"the stranger in the corner stops shivering. her breathing calms.",
+"the stranger is standing by the fire. she says she can help. says she builds things.",
+"builder says she can make a cart for carrying wood.",
+"builder says there are more wanderers. says they'll work, too.",
+"builder says leather could be useful. says the villagers could make it.",
+"should cure the meat, or it'll spoil. builder says she can fix something up.",
+"builder says she could make finer things, if she had the tools."
+];
+var forestInfo = [
+"the wind howls outside.",
+"the sky is grey and the wind blows relentlessly."
+];
+var woodInfo = [
+"the wood is running out.",
+"dry brush and dead branches litter the forest floor.",
+];
+var itemInfo = [
+"more traps to catch more creatures.",
+"the rickety cart will carry more wood from the forest.",
+"builder puts up a hut, out in the forest. says word will get around.",
+"the hunting lodge stands in the forest, a ways out of town.",
+"now the nomads have a place to set up shop, they might stick around a while.",
+"tannery goes up quick, on the edge of the village.",
+"builder finishes the smokehouse. she looks hungry.",
+"a torch to keep the dark away."
+];
+//the traps contain:
+var itemsInTrapInfo = [
+"bits of meat",
+"strange scales",
+"scraps of fur",
+"tattered cloth",
+"scattered teeth"
+];
+var info = [
+"villagers could help hunt, given the means.",
+"a stranger arrives in the night.",
+];
+var populationIncreasesInfo = [
+"a weathered family takes up in one of the huts.",
+"a stranger arrives in the night.",
+"a small group arrives, all dust and bones.",
+];
+var theDustyPathInfo = [
+"the trees are gone. parched earth and blowing dust are poor replacements.",
+"a wall of gnarled trees rises from the dust. their branches twist into a skeletal canopy overhead.",
+"the earth here is split, as if bearing an ancient wound.",
+"the path leads to an abandoned mine.",
+"a snarling beast leaps out of the underbrush.",
+"a startled beast defends its home.",
+"a giant lizard shambles forward.",
+"the trees yield to dry grass. the yellowed brush rustles in the wind.",
+"safer here.",
+"trees loom on the horizon. grasses gradually yield to a forest floor of dry branches and fallen leaves.",
+"there is no more water.",
+"the meat has run out.",
+"the thirst becomes unbearable.",
+"the world fades.",
+"a gaunt man approaches, a crazed look in his eye.",
+"a large creature attacks, claws freshly bloodied.",
+"dangerous to be this far from the village without proper protection.",
+"starvation sets in.",
+"the torch goes out.",
+"the town lies abandoned, its citizen's long dead.",
+"a shivering man approaches and attacks with surprising strength.",
+"a man stands over a dead wanderer. notices he's not alone.",
+"ambushed on the street."
+];
+var perkInfo = [
+"learned to throw punches with purpose.",
+"learned to fight quite effectively without weapons.",
+];
+var events = [
+["some traps have been destroyed.","there was a beast. it's dead now.","nothing was found."],
+["a mysterious wanderer arrives.","the mysterious wanderer returns, cart piled high with fur.","the mysterious wanderer returns, cart piled high with wood."],
+["a fire has started.","some villagers have died."],
+["a beggar arrives."],
+["a nomad arrives, looking to trade."],
+];
+
+
+var supplies = [
+["Wood",10],
+["Fur",0],
+["Meat",0],
+];
+var assets = [
+["Wood",10,0],
+];
+var jobAmounts = [
+["gatherer",0]
+];
+
+var village = [
+["Trap",0],
+["Cart",0],
+["Hut",0],
+["Lodge",0],
+["Trading Post",0],
+["Tannery",0],
+["Smokehouse",0],
+["Workshop",0],
+["Steelworks",0],
+["Armoury",0],
+];
+
+var perks = [];
+
+var population = 10;
+var room = 1;
+var fireStrength = 0;
+
+var roomTypes = [0,0,0,0];
+var roomsUnlocked = [true,false,false,false];
+
+var room1Names = [
+["A Dark Room", true],
+["A Firelit Room",1],
+];
+var room2Names = [
+["A Silent Forest",0],
+["A Lonely Hut",1,4],
+["A Tiny Village",2,8],
+["A Modest Village",5,20],
+["A Large Village",9,36],
+["A Raucous Village",15,60],
+];
+var room3Names = [
+["A Dusty Path",true],
+];
+var room4Names = [
+["The Old Starship",true],
+];
+
+
+var clicked = false;
+mouseClicked = function(){
+    clicked = true;
+};
+
+var designTitle = function(){
+background(0);
+textAlign(CENTER,CENTER);
+textFont(createFont("Impact"));
+fill(255);
+textSize(70);
+text("A Dark Room",300,50);
+for (var x = 50; x < 550; x +=40){
+    for (var y = 0; y < 200; y += 10){
+        fill(0);
+        triangle(random(x - 20, x + 20),random(y - 30, y + 30),random(x - 20, x + 20),random(y - 30, y + 30),random(x - 20, x + 20),random(y - 30, y + 30));
+    }
+}
+textFont(createFont("default"));
+};
+designTitle();
+//var aDarkRoomText = get(0,0,600,400);
+
+var arrow = function(type,x,y,Size,thickness,canUse,max,position){
+    if (canUse){
+        stroke(0);
+    }else{
+        stroke(100);
+    }
+    if (max){
+        strokeWeight(thickness+0.8);
+    }else{
+        strokeWeight(thickness);
+    }
+    if (type === "down"){
+        line(x,y,x - Size/2, y - Size/2);
+        line(x,y,x + Size/2, y - Size/2);
+    }
+    if (type === "up"){
+        line(x,y,x - Size/2, y + Size/2);
+        line(x,y,x + Size/2, y + Size/2);
+    }
+    noStroke();
+    if (type === "down"){
+        if (mouseX > x - Size/2 && mouseX < x + Size/2 && mouseY > y - Size/2 && mouseY < y){
+            if (clicked){
+                if (max){
+                    jobAmounts[position][1] = 0;
+                }else if (jobAmounts[position][1] > 0){
+                    jobAmounts[position][1] --;
+                }
+            }
+            if (canUse){
+                cursor("pointer");
+            }
+        }
+    }else{
+        if (mouseX > x - Size/2 && mouseX < x + Size/2 && mouseY > y && mouseY < y + Size/2){
+            if (clicked){
+                if (max){
+                    jobAmounts[position][1] = population;
+                }else if (jobAmounts[position][1] < population){
+                    jobAmounts[position][1] ++;
+                }
+            }
+            if (canUse){
+                cursor("pointer");
+            }
+        }
+    }
+    strokeWeight(1);
+};
+
+var button = function(Text,x,y,Width,Height,tooltip,reloadMax,toDo,whenToDisplay){
+    this.pos = new PVector(x,y);
+    this.Width = Width;
+    this.Height = Height;
+    
+    this.reloadTime = 0;
+    this.reloadMax = reloadMax;
+    
+    this.Text = Text;
+    this.testing = tooltip.split("\n");
+    this.tooltip = tooltip;
+    
+    this.toDo = toDo;
+    
+    this.over = false;
+};
+button.prototype.display = function(){
+    if (this.whenToDisplay){
+        strokeWeight(1);
+        if (this.reloadTime === this.reloadMax){
+            stroke(0);
+            fill(255);
+            rect(this.pos.x,this.pos.y,this.Width,this.Height);
+            fill(50);
+            textSize(13);
+            text(this.Text,this.pos.x + this.Width/2,this.pos.y + this.Height/2);
+            
+            if (this.over && this.reloadTime === this.reloadMax){
+                line(this.pos.x + this.Width/2 - textWidth(this.Text)/2 - 4,this.pos.y + this.Height/1.17,this.pos.x + (this.Width + textWidth(this.Text))/2,this.pos.y + this.Height/1.17);
+            }
+            
+            if (this.tooltip !== false && this.over){
+                fill(255);
+                stroke(0,0,0);
+                rect(mouseX,mouseY+20,this.Width,this.Height/1.5 * this.testing.length);
+                
+                fill(50,50,50);
+                textSize(12);
+                text(this.tooltip,mouseX+this.Width/2,mouseY+20 + this.Height*0.35 * this.testing.length);
+            }
+        }else{
+            stroke(100);
+            noFill();
+            rect(this.pos.x,this.pos.y,this.Width,this.Height);
+            fill(230);
+            rect(this.pos.x,this.pos.y,map(this.reloadMax - this.reloadTime,0,this.reloadMax,0,this.Width),this.Height);
+            fill(150);
+            textSize(13);
+            text(this.Text,this.pos.x + this.Width/2,this.pos.y + this.Height/2);
+        }
+    }
+};
+button.prototype.update = function(){
+    if (this.whenToDisplay){
+        if (mouseX > this.pos.x && mouseY > this.pos.y && mouseX < this.pos.x + this.Width && mouseY < this.pos.y + this.Height && this.reloadTime === this.reloadMax){
+            this.over = true;
+            if (clicked){
+                this.reloadTime = 0;
+            }
+        }else{
+            this.over = false;
+        }
+        if (this.over){
+            cursor("pointer");
+        }
+        if (this.reloadTime < this.reloadMax){
+            this.reloadTime ++;
+        }
+    }
+};
+
+var list = function(name, x, y, items, asset,whenToDisplay){
+    this.name = name;
+    this.pos = new PVector(x,y);
+    this.items = items;
+    this.asset = asset;
+    this.Size = 200;
+    this.whenToDisplay = whenToDisplay;
+};
+list.prototype.display = function(){
+    if (this.whenToDisplay){
+        fill(255);
+        stroke(0);
+        rect(this.pos.x, this.pos.y, this.Size, this.items.length * 20 + 6);
+        for (var i = 0; i < this.items.length; i ++){
+            fill(0);
+            textAlign(LEFT,CENTER);
+            textSize(12);
+            text(this.items[i][0],this.pos.x + 8, this.pos.y + 13 + i * 20);
+            textAlign(RIGHT,CENTER);
+            text(this.items[i][1],this.pos.x + this.Size - 10, this.pos.y + 13 + i * 20);
+            for (var ii = 0; ii < this.asset.length; ii ++){
+                if (mouseX > this.pos.x && mouseX < this.pos.x + this.Size && mouseY > this.pos.y + i * 20 && mouseY < this.pos.y + (i + 1) * 20){
+                    if (this.asset[ii][0] === this.items[i][0]){
+                        fill(255);
+                        stroke(0,0,0);
+                        rect(mouseX,mouseY+20,this.Size/2 + 10,20);
+                        textAlign(CENTER,CENTER);
+                        fill(0);
+                        textSize(12);
+                        text("Every 10 Sec:  "+ ((this.asset[ii][1] - this.asset[ii][2]) > 0 ? "+" : "-") + (this.asset[ii][1] - this.asset[ii][2]),mouseX+this.Size/4+5,mouseY + 30);
+                    }
+                }
+            }
+        }
+        textAlign(BASELINE);
+        textSize(13);
+        text(this.name,this.pos.x + this.Size/7, this.pos.y - this.Size/40);
+    }
+};
+
+var job = function(Type,x,y,Size,item,amount){
+    this.Type = Type;
+    this.pos = new PVector(x,y);
+    this.Size = Size;
+    this.item = item;
+    this.amount = amount;
+    this.testing = item.split("\n");
+};
+job.prototype.display = function(){
+    textSize(15);
+    textAlign(LEFT,CENTER);
+    text(this.Type,this.pos.x,this.pos.y);
+    textAlign(RIGHT,CENTER);
+    for (var i = 0; i < jobAmounts.length; i ++){
+        if (this.Type === jobAmounts[i][0]){
+            text(jobAmounts[i][1],this.pos.x + this.Size - 15,this.pos.y);
+        }
+        arrow("up",this.pos.x + this.Size, this.pos.y - 7,10,1.5,jobAmounts[i][1] < population,false,0);
+        arrow("down",this.pos.x + this.Size, this.pos.y + 7,10,1.5,jobAmounts[i][1] > 0,false,0);
+        arrow("up",this.pos.x + this.Size + 20, this.pos.y - 7,10,1.5,jobAmounts[i][1] < population,true,0);
+        arrow("down",this.pos.x + this.Size + 20, this.pos.y +7,10,1.5,jobAmounts[i][1] > 0,true,0);
+        if (mouseX > this.pos.x && mouseX < this.pos.x + this.Size + 30 && mouseY > this.pos.y - 10 && mouseY < this.pos.y + 10){
+            fill(255);
+            stroke(0,0,0);
+            rect(mouseX,mouseY+20,this.Size*1.25,20 * this.testing.length);
+            fill(0);
+            textSize(12);
+            
+            textAlign(LEFT,CENTER);
+            text(this.item,mouseX + 5,mouseY + 30);
+            
+            textAlign(RIGHT,CENTER);
+            text((this.amount >= 0 ? "+" : "-") + (this.amount*jobAmounts[i][1]) + " per 10s",mouseX + this.Size*1.25 - 5, mouseY + 30);
+        }
+    }
+};
+
+var messages = function(){
+    this.Text = [
+    "the room is freezing.",
+    "the fire is dead.",
+    ];
+};
+messages.prototype.display = function(){
+    textAlign(BASELINE);
+    textSize(13);
+    for (var i = 0; i < this.Text.length; i ++){
+        text(this.Text[i],10,30 + i * 20);
+    }
+};
+
+var buttons = [];
+var jobs = [];
+var lists = [];
+var messageBox = new messages();
+
+draw = function() {
+if (!mouseIsPressed){
+    clicked = false;
+}
+textAlign(CENTER,CENTER);
+cursor("default");
+background(255);
+
+messageBox.display();
+};
